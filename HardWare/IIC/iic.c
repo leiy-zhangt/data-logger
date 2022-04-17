@@ -1,153 +1,142 @@
 #include "iic.h"
-#include "delay.h"
 
+#ifdef EN_I2C1
 
-//初始化IIC
-void IIC_Init(void)
-{			
-  GPIO_InitTypeDef  GPIO_InitStructure;
-
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);//使能GPIOB时钟
-
-  //GPIOB8,B9初始化设置
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;//普通输出模式
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;//推挽输出
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100MHz
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;//上拉
-  GPIO_Init(GPIOB, &GPIO_InitStructure);//初始化
-	IIC_SCL=1;
-	IIC_SDA=1;
+void I2C1_Configuration(void)
+{
+	GPIO_InitTypeDef  GPIO_InitStructure;
+	I2C_InitTypeDef I2C_InitStructure;
+	//开启时钟
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB,ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1,ENABLE);
+	//配置引脚
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStructure.GPIO_Pin = I2C1_SCL|I2C1_SDA;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_High_Speed;
+	GPIO_Init(I2C1_Port,&GPIO_InitStructure);
+	//配置复用模式
+	GPIO_PinAFConfig(I2C1_Port,I2C1_Pinsourse_SCL,GPIO_AF_I2C1);
+	GPIO_PinAFConfig(I2C1_Port,I2C1_Pinsourse_SDA,GPIO_AF_I2C1);
+	//配置I2C参数
+	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+    I2C_InitStructure.I2C_ClockSpeed = I2C1_Speed;
+    I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+    I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+    I2C_InitStructure.I2C_OwnAddress1 = 0X11;
+    I2C_Init(I2C1,&I2C_InitStructure);
+    I2C_Cmd(I2C1,ENABLE);
 }
-//产生IIC起始信号
-void IIC_Start(void)
+#endif
+
+#ifdef EN_I2C2
+
+void I2C2_Configuration(void)
 {
-	SDA_OUT();     //sda线输出
-	IIC_SDA=1;	  	  
-	IIC_SCL=1;
-	delay_us(4);
- 	IIC_SDA=0;//START:when CLK is high,DATA change form high to low 
-	delay_us(4);
-	IIC_SCL=0;//钳住I2C总线，准备发送或接收数据 
-}	  
-//产生IIC停止信号
-void IIC_Stop(void)
-{
-	SDA_OUT();//sda线输出
-	IIC_SCL=0;
-	IIC_SDA=0;//STOP:when CLK is high DATA change form low to high
- 	delay_us(4);
-	IIC_SCL=1; 
-	IIC_SDA=1;//发送I2C总线结束信号
-	delay_us(4);							   	
+	GPIO_InitTypeDef  GPIO_InitStructure;
+	I2C_InitTypeDef I2C_InitStructure;
+	//开启时钟
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB,ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2,ENABLE);
+	//配置引脚
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStructure.GPIO_Pin = I2C2_SCL|I2C2_SDA;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_High_Speed;
+	GPIO_Init(I2C2_Port,&GPIO_InitStructure);
+	//配置复用模式
+	GPIO_PinAFConfig(I2C2_Port,I2C2_Pinsourse_SCL,GPIO_AF_I2C2);
+	GPIO_PinAFConfig(I2C2_Port,I2C2_Pinsourse_SDA,GPIO_AF_I2C2);
+	//配置I2C参数
+	I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+	I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
+    I2C_InitStructure.I2C_ClockSpeed = I2C2_Speed;
+    I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_2;
+    I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+    I2C_InitStructure.I2C_OwnAddress1 = 0X11;
+    I2C_Init(I2C2,&I2C_InitStructure);
+    I2C_Cmd(I2C2,ENABLE);
 }
-//等待应答信号到来
-//返回值：1，接收应答失败
-//        0，接收应答成功
-u8 IIC_Wait_Ack(void)
+
+#endif
+
+
+void I2C_SendByte(I2C_TypeDef* I2C,u8 SlaveAddr,u8 WriteAddr,u8 Data)
 {
-	u8 ucErrTime=0;
-	SDA_IN();      //SDA设置为输入  
-	IIC_SDA=1;delay_us(1);	   
-	IIC_SCL=1;delay_us(1);	 
-	while(READ_SDA)
-	{
-		ucErrTime++;
-		if(ucErrTime>250)
-		{
-			IIC_Stop();
-			return 1;
-		}
+    I2C_GenerateSTART(I2C,ENABLE);
+    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_MODE_SELECT));
+    I2C_Send7bitAddress(I2C,SlaveAddr,I2C_Direction_Transmitter);
+    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));
+    I2C_SendData(I2C,WriteAddr);
+    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_BYTE_TRANSMITTED));    
+    I2C_SendData(I2C,Data);
+    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+    I2C_GenerateSTOP(I2C,ENABLE);
+}
+
+void I2C_SendBuffer(I2C_TypeDef* I2C,u8 SlaveAddr,u8 WriteAddr,u8 *buffer,u16 length)
+{
+    while(I2C_GetFlagStatus(I2C,I2C_FLAG_BUSY));
+    I2C_GenerateSTART(I2C,ENABLE);
+    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_MODE_SELECT));	//清除 EV5
+	I2C_Send7bitAddress(I2C,SlaveAddr, I2C_Direction_Transmitter); //写入器件地址
+	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));//清除 EV6
+    I2C_SendData(I2C,WriteAddr); //内部功能地址
+	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_BYTE_TRANSMITTED));//移位寄存器非空，数据寄存器已空，产生EV8，发送数据到DR既清除该事件
+	while(length--){ //循环发送数据	
+		I2C_SendData(I2C,*buffer); //发送数据
+		buffer++; //数据指针移位
+		while (!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_BYTE_TRANSMITTED));//清除EV8
 	}
-	IIC_SCL=0;//时钟输出0 	   
-	return 0;  
-} 
-//产生ACK应答
-void IIC_Ack(void)
-{
-	IIC_SCL=0;
-	SDA_OUT();
-	IIC_SDA=0;
-	delay_us(2);
-	IIC_SCL=1;
-	delay_us(2);
-	IIC_SCL=0;
-}
-//不产生ACK应答		    
-void IIC_NAck(void)
-{
-	IIC_SCL=0;
-	SDA_OUT();
-	IIC_SDA=1;
-	delay_us(2);
-	IIC_SCL=1;
-	delay_us(2);
-	IIC_SCL=0;
-}					 				     
-//IIC发送一个字节
-//返回从机有无应答
-//1，有应答
-//0，无应答			  
-void IIC_Send_Byte(u8 txd)
-{                        
-    u8 t;   
-	SDA_OUT(); 	    
-    IIC_SCL=0;//拉低时钟开始数据传输
-    for(t=0;t<8;t++)
-    {              
-        IIC_SDA=(txd&0x80)>>7;
-        txd<<=1; 	  
-		delay_us(2);   //对TEA5767这三个延时都是必须的
-		IIC_SCL=1;
-		delay_us(2); 
-		IIC_SCL=0;	
-		delay_us(2);
-    }	 
-} 	    
-//读1个字节，ack=1时，发送ACK，ack=0，发送nACK   
-u8 IIC_Read_Byte(unsigned char ack)
-{
-	unsigned char i,receive=0;
-	SDA_IN();//SDA设置为输入
-    for(i=0;i<8;i++ )
-	{
-        IIC_SCL=0; 
-        delay_us(2);
-		IIC_SCL=1;
-        receive<<=1;
-        if(READ_SDA)receive++;   
-		delay_us(1); 
-    }					 
-    if (!ack)
-        IIC_NAck();//发送nACK
-    else
-        IIC_Ack(); //发送ACK   
-    return receive;
+	I2C_GenerateSTOP(I2C,ENABLE);//产生停止信号
 }
 
+u8 I2C_ReadByte(I2C_TypeDef* I2C,u8 SlaveAddr,u8 ReadAddr)      //I2C读取一个字节
+{ 
+	while(I2C_GetFlagStatus(I2C,I2C_FLAG_BUSY));
+	I2C_GenerateSTART(I2C,ENABLE);
+	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_MODE_SELECT));
+	I2C_Send7bitAddress(I2C,SlaveAddr,I2C_Direction_Transmitter); 
+	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));
+//	I2C_Cmd(I2C1,ENABLE);
+	I2C_SendData(I2C1,ReadAddr);
+	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+	I2C_GenerateSTART(I2C,ENABLE);
+	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_MODE_SELECT));
+	I2C_Send7bitAddress(I2C,SlaveAddr,I2C_Direction_Receiver);
+	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED));
+	I2C_AcknowledgeConfig(I2C,DISABLE); //最后有一个数据时关闭应答位
+	I2C_GenerateSTOP(I2C,ENABLE);	//最后一个数据时使能停止位
+	return I2C_ReceiveData(I2C);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void I2C_ReadBuffer(I2C_TypeDef* I2C,u8 SlaveAddr,u8 ReadAddr,u8* buffer,u16 length)
+{ //I2C读取数据串（器件地址，寄存器，内部地址，数量）
+    while(I2C_GetFlagStatus(I2C,I2C_FLAG_BUSY));
+    I2C_GenerateSTART(I2C,ENABLE);//开启信号
+    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_MODE_SELECT));	//清除 EV5
+    I2C_Send7bitAddress(I2C,SlaveAddr,I2C_Direction_Transmitter); //写入器件地址
+    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));//清除 EV6
+    //	I2C_Cmd(I2C,ENABLE);
+    I2C_SendData(I2C,ReadAddr); //发送读的地址
+    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_BYTE_TRANSMITTED)); //清除 EV8
+    I2C_GenerateSTART(I2C,ENABLE); //开启信号
+    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_MODE_SELECT)); //清除 EV5
+    I2C_Send7bitAddress(I2C,SlaveAddr,I2C_Direction_Receiver); //将器件地址传出，主机为读
+    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED)); //清除EV6
+    while(length){
+        if(length == 1){ //只剩下最后一个数据时进入 if 语句
+            I2C_AcknowledgeConfig(I2C,DISABLE); //最后有一个数据时关闭应答位
+            I2C_GenerateSTOP(I2C,ENABLE);	//最后一个数据时使能停止位
+        }
+        if(I2C_CheckEvent(I2C,I2C_EVENT_MASTER_BYTE_RECEIVED)){ //读取数据
+            *buffer = I2C_ReceiveData(I2C);//调用库函数将数据取出到 pBuffer
+            buffer++; //指针移位
+            length--; //字节数减 1 
+        }
+    }
+    I2C_AcknowledgeConfig(I2C,ENABLE);
+}

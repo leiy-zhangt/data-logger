@@ -40,3 +40,5 @@
 .\objects\main.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\main.o: ..\HardWare\SPI\spi.h
 .\objects\main.o: ..\HardWare\W25QXX\w25qxx.h
+.\objects\main.o: ..\HardWare\IIC\myiic.h
+.\objects\main.o: ..\HardWare\IIC\iic.h
