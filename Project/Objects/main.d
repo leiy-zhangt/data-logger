@@ -37,6 +37,9 @@
 .\objects\main.o: ..\Basic\inc\stm32f4xx_fsmc.h
 .\objects\main.o: ..\System\delay\delay.h
 .\objects\main.o: ..\HardWare\USART\usart.h
+.\objects\main.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\main.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\main.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\main.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\main.o: ..\HardWare\SPI\spi.h
 .\objects\main.o: ..\HardWare\IIC\iic.h

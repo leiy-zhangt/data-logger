@@ -1,26 +1,38 @@
 #ifndef __USART_H
 #define __USART_H
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
 #include "stdio.h"	
-#include "stm32f4xx_conf.h"
 #include "sys.h" 
-//////////////////////////////////////////////////////////////////////////////////	 
-//支持适应不同频率下的串口波特率设置.
-//加入了对printf的支持
-//增加了串口接收命令功能.
-//修正了printf第一个字符丢失的bug
-//V1.4修改说明
-//1,修改串口初始化IO的bug
-//2,修改了USART_RX_STA,使得串口最大接收字节数为2的14次方
-//3,增加了USART_REC_LEN,用于定义串口最大允许接收的字节数(不大于2的14次方)
-//4,修改了EN_USART1_RX的使能方式
-////////////////////////////////////////////////////////////////////////////////// 	
-#define USART_REC_LEN  			200  	//定义最大接收字节数 200
-#define EN_USART1_RX 			1		//使能（1）/禁止（0）串口1接收
+
+#define USART_n		USART1  //定义使用printf函数的串口，其他串口要使用USART_printf专用函数发送
+
+#define USART1_REC_LEN  			200  	//定义USART1最大接收字节数
+#define USART2_REC_LEN  			200  	//定义USART2最大接收字节数
+#define USART3_REC_LEN  			200  	//定义USART3最大接收字节数
+
+//不使用某个串口时要禁止此串口，以减少编译量
+#define EN_USART1 			1		//使能（1）/禁止（0）串口1
+#define EN_USART2 			1		//使能（1）/禁止（0）串口2
+#define EN_USART3 			1		//使能（1）/禁止（0）串口3
 	  	
-extern u8  USART_RX_BUF[USART_REC_LEN]; //接收缓冲,最大USART_REC_LEN个字节.末字节为换行符 
-extern u16 USART_RX_STA;         		//接收状态标记	
-//如果想串口中断接收，请不要注释以下宏定义
-void uart_init(u32 bound);
+extern u8  USART1_RX_BUF[USART1_REC_LEN]; //接收缓冲,最大USART_REC_LEN个字节.末字节为换行符 
+extern u8  USART2_RX_BUF[USART2_REC_LEN]; //接收缓冲,最大USART_REC_LEN个字节.末字节为换行符
+extern u8  USART3_RX_BUF[USART3_REC_LEN]; //接收缓冲,最大USART_REC_LEN个字节.末字节为换行符
+ 
+extern u16 USART1_RX_STA;         		//接收状态标记	
+extern u16 USART2_RX_STA;         		//接收状态标记	
+extern u16 USART3_RX_STA;         		//接收状态标记	
+
+//函数声明
+void USART1_Configuration(u32 bound,FunctionalState ITStatus);//串口1初始化并启动
+void USART2_Configuration(u32 bound,FunctionalState ITStatus);//串口2初始化并启动
+void USART3_Configuration(u32 bound,FunctionalState ITStatus);//串口3初始化并启动
+void USART1_printf(char* fmt,...); //串口1的专用printf函数
+void USART2_printf(char* fmt,...); //串口2的专用printf函数
+void USART3_printf(char* fmt,...); //串口3的专用printf函数
+
 #endif
 
 

@@ -12,12 +12,10 @@ int main(void)
     NVIC_Configuration();
 	SPI1_Configuration();
     LED_Init();
-    uart_init(115200);
+    USART1_Configuration(115200,ENABLE);
     while(1)
     {
-        USART_SendData(USART1,'a');
-        LED=!LED;
-        delay_ms(65000);
+        
     }
 }
 

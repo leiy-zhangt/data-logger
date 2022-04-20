@@ -1,4 +1,9 @@
 .\objects\usart.o: ..\HardWare\USART\usart.c
+.\objects\usart.o: ..\HardWare\USART\usart.h
+.\objects\usart.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\usart.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\usart.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\usart.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\usart.o: ..\System\sys\sys.h
 .\objects\usart.o: ..\User\stm32f4xx.h
 .\objects\usart.o: ..\CMSIS\core_cm4.h
@@ -35,5 +40,3 @@
 .\objects\usart.o: ..\Basic\inc\stm32f4xx_dac.h
 .\objects\usart.o: ..\Basic\inc\stm32f4xx_dcmi.h
 .\objects\usart.o: ..\Basic\inc\stm32f4xx_fsmc.h
-.\objects\usart.o: ..\HardWare\USART\usart.h
-.\objects\usart.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
