@@ -36,3 +36,5 @@
 .\objects\bmi055.o: ..\Basic\inc\stm32f4xx_dac.h
 .\objects\bmi055.o: ..\Basic\inc\stm32f4xx_dcmi.h
 .\objects\bmi055.o: ..\Basic\inc\stm32f4xx_fsmc.h
+.\objects\bmi055.o: ..\System\delay\delay.h
+.\objects\bmi055.o: ..\HardWare\SPI\spi.h

@@ -44,3 +44,4 @@
 .\objects\main.o: ..\HardWare\SPI\spi.h
 .\objects\main.o: ..\HardWare\IIC\iic.h
 .\objects\main.o: ..\HardWare\LED\led.h
+.\objects\main.o: ..\HardWare\BMI055\bmi055.h
