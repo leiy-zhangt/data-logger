@@ -54,8 +54,6 @@ void BMI055_Configuration(void)
     //配置BMI055
     BMI055_SendData(ACC_Choose,0X0F,ACC_Range_4g);//加速度计量程选择
     BMI055_SendData(ACC_Choose,0X10,0X0C); //滤波器带宽选择
-    
-    
 }
 
 void BMI055_SendData(IMU_Choose IMU,u8 addr,u8 data)

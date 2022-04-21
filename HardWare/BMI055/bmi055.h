@@ -23,9 +23,9 @@
 
 typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
 
-void BMI055_Configuration(void);
+void BMI055_Configuration(void); //MI055初始化函数
 void BMI055_SendData(IMU_Choose IMU,u8 addr,u8 data); //BMI055发送数据函数
-u8 BMI055_ReadData(IMU_Choose IMU,u8 addr);
-void BMI055_ReadBuffer(IMU_Choose IMU,u8 addr,u8* buffer,u8 length);
+u8 BMI055_ReadData(IMU_Choose IMU,u8 addr); //BMI055单字节接收
+void BMI055_ReadBuffer(IMU_Choose IMU,u8 addr,u8* buffer,u8 length); //BMI055数组接收
 
 #endif

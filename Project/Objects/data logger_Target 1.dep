@@ -1392,8 +1392,8 @@ I (..\Basic\inc\stm32f4xx_can.h)(0x5710F385)
 I (..\Basic\inc\stm32f4xx_dac.h)(0x5710F385)
 I (..\Basic\inc\stm32f4xx_dcmi.h)(0x5710F385)
 I (..\Basic\inc\stm32f4xx_fsmc.h)(0x5710F385)
-F (..\HardWare\BMI055\bmi055.c)(0x62616FF2)(--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\Basic\inc -I ..\HardWare\IIC -I ..\HardWare\SPI -I ..\HardWare\USART -I ..\HardWare\W25 -I ..\System\delay -I ..\System\sys -I ..\User -I ..\CMSIS -I ..\HardWare\BMI055 -I ..\HardWare\LED-I.\RTE\_Target_1-ID:\ProgramFile\Keil5\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\ProgramFile\Keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F405xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o .\objects\bmi055.o --omf_browse .\objects\bmi055.crf --depend .\objects\bmi055.d)
-I (..\HardWare\BMI055\bmi055.h)(0x62615500)
+F (..\HardWare\BMI055\bmi055.c)(0x6261707A)(--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\Basic\inc -I ..\HardWare\IIC -I ..\HardWare\SPI -I ..\HardWare\USART -I ..\HardWare\W25 -I ..\System\delay -I ..\System\sys -I ..\User -I ..\CMSIS -I ..\HardWare\BMI055 -I ..\HardWare\LED-I.\RTE\_Target_1-ID:\ProgramFile\Keil5\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\ProgramFile\Keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F405xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o .\objects\bmi055.o --omf_browse .\objects\bmi055.crf --depend .\objects\bmi055.d)
+I (..\HardWare\BMI055\bmi055.h)(0x626170E7)
 I (..\System\sys\sys.h)(0x625ED1EE)
 I (..\User\stm32f4xx.h)(0x5710F387)
 I (..\CMSIS\core_cm4.h)(0x5710F385)
@@ -1626,7 +1626,7 @@ I (D:\ProgramFile\Keil5\ARM\ARMCC\include\stdio.h)(0x5E53505C)
 I (..\HardWare\SPI\spi.h)(0x625FF8BF)
 I (..\HardWare\IIC\iic.h)(0x625BBDAF)
 I (..\HardWare\LED\led.h)(0x625EAB52)
-I (..\HardWare\BMI055\bmi055.h)(0x62615500)
+I (..\HardWare\BMI055\bmi055.h)(0x626170E7)
 F (..\User\stm32f4xx_it.c)(0x5710F387)(--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\Basic\inc -I ..\HardWare\IIC -I ..\HardWare\SPI -I ..\HardWare\USART -I ..\HardWare\W25 -I ..\System\delay -I ..\System\sys -I ..\User -I ..\CMSIS -I ..\HardWare\BMI055 -I ..\HardWare\LED-I.\RTE\_Target_1-ID:\ProgramFile\Keil5\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-ID:\ProgramFile\Keil5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F405xx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o .\objects\stm32f4xx_it.o --omf_browse .\objects\stm32f4xx_it.crf --depend .\objects\stm32f4xx_it.d)
 I (..\User\stm32f4xx_it.h)(0x5710F387)
 I (..\User\stm32f4xx.h)(0x5710F387)
