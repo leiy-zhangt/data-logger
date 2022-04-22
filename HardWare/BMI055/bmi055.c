@@ -54,6 +54,9 @@ void BMI055_Configuration(void)
     //配置BMI055
     BMI055_SendData(ACC_Choose,0X0F,ACC_Range_4g);//加速度计量程选择
     BMI055_SendData(ACC_Choose,0X10,0X0C); //滤波器带宽选择
+    BMI055_SendData(GYR_Choose,0X0F,GYR_Range_125);//陀螺仪计量程选择
+    BMI055_SendData(GYR_Choose,0X10,ODR_100Hz_32BD);//陀螺仪输出速率设置
+    
 }
 
 void BMI055_SendData(IMU_Choose IMU,u8 addr,u8 data)
