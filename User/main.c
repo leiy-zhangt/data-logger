@@ -7,6 +7,7 @@
 #include "bmi055.h"
 #include "w25n.h"
 #include "serve.h"
+#include "buzzer.h"
 
 int main(void)
 { 
@@ -17,22 +18,11 @@ int main(void)
     LED_Init();
     USART1_Configuration(115200,DISABLE);
     W25N_Configuration();
-    SERVE_Configution();
-    EN_SERVE = 1;
+    SERVE_Configution(ENABLE);
+    BUZZER_Configuration();
     while(1)
     {
-        TIM_SetCompare1(TIM3,500);
-        TIM_SetCompare2(TIM3,500);
-        TIM_SetCompare3(TIM3,500);
-        TIM_SetCompare4(TIM3,500);
-        LED=!LED;
-        delay_ms(1000);
-        TIM_SetCompare1(TIM3,2500);
-        TIM_SetCompare2(TIM3,2500);
-        TIM_SetCompare3(TIM3,2500);
-        TIM_SetCompare4(TIM3,2500);
-        LED=!LED;
-        delay_ms(1000);
+        
     }
 }
 

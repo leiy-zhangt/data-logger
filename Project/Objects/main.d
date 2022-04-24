@@ -47,3 +47,4 @@
 .\objects\main.o: ..\HardWare\BMI055\bmi055.h
 .\objects\main.o: ..\HardWare\W25N\w25n.h
 .\objects\main.o: ..\HardWare\SERVE\serve.h
+.\objects\main.o: ..\HardWare\BUZZER\buzzer.h

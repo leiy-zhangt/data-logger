@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Basic\inc;..\HardWare\IIC;..\HardWare\SPI;..\HardWare\USART;..\HardWare\W25N;..\System\delay;..\System\sys;..\User;..\CMSIS;..\HardWare\BMI055;..\HardWare\LED;..\HardWare\SERVE</IncludePath>
+              <IncludePath>..\Basic\inc;..\HardWare\IIC;..\HardWare\SPI;..\HardWare\USART;..\HardWare\W25N;..\System\delay;..\System\sys;..\User;..\CMSIS;..\HardWare\BMI055;..\HardWare\LED;..\HardWare\SERVE;..\HardWare\BUZZER</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -666,6 +666,11 @@
               <FileName>serve.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HardWare\SERVE\serve.c</FilePath>
+            </File>
+            <File>
+              <FileName>buzzer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardWare\BUZZER\buzzer.c</FilePath>
             </File>
           </Files>
         </Group>
