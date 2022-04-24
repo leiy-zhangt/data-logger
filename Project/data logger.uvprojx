@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Basic\inc;..\HardWare\IIC;..\HardWare\SPI;..\HardWare\USART;..\HardWare\W25;..\System\delay;..\System\sys;..\User;..\CMSIS;..\HardWare\BMI055;..\HardWare\LED</IncludePath>
+              <IncludePath>..\Basic\inc;..\HardWare\IIC;..\HardWare\SPI;..\HardWare\USART;..\HardWare\W25N;..\System\delay;..\System\sys;..\User;..\CMSIS;..\HardWare\BMI055;..\HardWare\LED;..\HardWare\SERVE</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -658,9 +658,14 @@
               <FilePath>..\HardWare\LED\led.c</FilePath>
             </File>
             <File>
-              <FileName>w25.c</FileName>
+              <FileName>w25n.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\HardWare\W25\w25.c</FilePath>
+              <FilePath>..\HardWare\W25N\w25n.c</FilePath>
+            </File>
+            <File>
+              <FileName>serve.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardWare\SERVE\serve.c</FilePath>
             </File>
           </Files>
         </Group>

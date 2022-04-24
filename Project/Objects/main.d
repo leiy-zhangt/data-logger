@@ -45,3 +45,5 @@
 .\objects\main.o: ..\HardWare\IIC\iic.h
 .\objects\main.o: ..\HardWare\LED\led.h
 .\objects\main.o: ..\HardWare\BMI055\bmi055.h
+.\objects\main.o: ..\HardWare\W25N\w25n.h
+.\objects\main.o: ..\HardWare\SERVE\serve.h
