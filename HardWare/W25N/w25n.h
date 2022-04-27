@@ -13,8 +13,17 @@
 #define	W25N_WP PAout(12)  	//W25Q的写入保护
 #define	W25N_HOLD PAout(15)  	//W25Q的保持
 
-void W25N_Configuration(void);
+static u8 buffer[2048];
 
+void W25N_Configuration(void);
+void W25N_WriteEnable(void);  //写使能
+FlagStatus W25N_CheckBusy(void); //检查BUSY位
+void W25N_WaitBusy(void);  //等待BUSY位
+void W25N_BlockErase(uint16_t block); //擦除0~1023块  Bloc = Page/64
+void W25N_ChipErase(void); //擦除整个芯片
+void W25N_DataWrirte(u8 *buffer,uint16_t page); //向Page写入数据
+void W25N_SendData(u8 addr,u8 data); //向寄存器写入数据
+void  W25N_DataReceive(u8 *buffer,uint16_t page); //从Page中读取数据
 #endif
 
 
