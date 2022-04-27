@@ -11,25 +11,22 @@
 
 int main(void)
 { 
-    __IO u8 res[2048]={0},page;
-    __IO uint16_t n;
     RCC_Configuration();
     NVIC_Configuration();
 	SPI1_Configuration();
-    BMI055_Configuration();
+    USART1_Configuration(256000,DISABLE);
+    BMI055_Configuration(BMI_Frequence_10Hz);
     LED_Init();
-    USART1_Configuration(115200,DISABLE);
     W25N_Configuration();
     SERVE_Configution(DISABLE);
     BUZZER_Configuration();
-    
-    for(n=0;n<2048;n++)
+    delay_ms(2000);
+    printf("acc_x  acc_y  acc_z  gyr_x  gyr_y  gyr_z\r\n");
+    delay_ms(2000);
+    BMI_ReadCmd(ENABLE);
+    while(1)
     {
-        buffer[n]=n%255;
+//        LED = !LED;
     }
-    W25N_DataWrirte(buffer,0X00ff); 
-    W25N_DataReceive(res,0X00ff);
-    W25N_BlockErase(0x00ff/64);
-    W25N_DataReceive(res,0X00ff);  
 }
 

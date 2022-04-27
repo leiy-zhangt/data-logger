@@ -4,6 +4,8 @@
 #include "sys.h"
 #include "delay.h"
 #include "spi.h"
+#include "usart.h"
+#include "led.h"
 
 #define ACC_CS PCout(0)
 #define GYR_CS PCout(2) 
@@ -36,9 +38,16 @@
 #define ODR_2000Hz_230BD 0X01
 #define ODR_2000Hz_523BD 0X10
 
-typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
+#define BMI_ReadCmd(status) TIM_Cmd(TIM4,status) 
 
-void BMI055_Configuration(void); //MI055初始化函数
+typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
+typedef enum {BMI_Frequence_10Hz = 4999,BMI_Frequence_20Hz = 2499,BMI_Frequence_50Hz = 999}BMI_Frequence;
+
+static u8 bmi_data[12],n;
+static int16_t acc_16,gyr_16;
+static double acc,gyr;
+    
+void BMI055_Configuration(BMI_Frequence frequence); //MI055初始化函数
 void BMI055_SendData(IMU_Choose IMU,u8 addr,u8 data); //BMI055发送数据函数
 u8 BMI055_ReadData(IMU_Choose IMU,u8 addr); //BMI055单字节接收
 void BMI055_ReadBuffer(IMU_Choose IMU,u8 addr,u8* buffer,u8 length); //BMI055数组接收

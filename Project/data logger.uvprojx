@@ -633,11 +633,6 @@
               <FilePath>..\HardWare\IIC\iic.c</FilePath>
             </File>
             <File>
-              <FileName>myiic.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\HardWare\IIC\myiic.c</FilePath>
-            </File>
-            <File>
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HardWare\USART\usart.c</FilePath>
