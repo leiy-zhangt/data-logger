@@ -5,6 +5,8 @@
 #include <string.h>
 #include "stdio.h"	
 #include "sys.h" 
+#include "w25n.h"
+#include "bmi055.h"
 
 #define USART_n		USART1  //¶¨ÒåÊ¹ÓÃprintfº¯ÊýµÄ´®¿Ú£¬ÆäËû´®¿ÚÒªÊ¹ÓÃUSART_printf×¨ÓÃº¯Êý·¢ËÍ
 
@@ -32,7 +34,7 @@ void USART3_Configuration(u32 bound,FunctionalState ITStatus);//´®¿Ú3³õÊ¼»¯²¢Æô¶
 void USART1_printf(char* fmt,...); //´®¿Ú1µÄ×¨ÓÃprintfº¯Êý
 void USART2_printf(char* fmt,...); //´®¿Ú2µÄ×¨ÓÃprintfº¯Êý
 void USART3_printf(char* fmt,...); //´®¿Ú3µÄ×¨ÓÃprintfº¯Êý
-
+void Command_Execute(USART_TypeDef* USARTx);
 #endif
 
 

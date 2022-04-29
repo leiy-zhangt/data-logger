@@ -13,7 +13,7 @@
 #define	W25N_WP PAout(12)  	//W25Q的写入保护
 #define	W25N_HOLD PAout(15)  	//W25Q的保持
 
-static u8 buffer[2048];
+extern uint16_t page; 
 
 void W25N_Configuration(void);
 void W25N_WriteEnable(void);  //写使能

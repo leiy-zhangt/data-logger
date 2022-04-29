@@ -1,3 +1,10 @@
+/*
+指令集：
+CE:W25N擦除
+BE:BMI055开始读取数据
+BD：BMI055停止工作
+DR:读取数据
+*/
 #include "sys.h"
 #include "delay.h"
 #include "usart.h"
@@ -14,19 +21,19 @@ int main(void)
     RCC_Configuration();
     NVIC_Configuration();
 	SPI1_Configuration();
-    USART1_Configuration(256000,DISABLE);
+    USART1_Configuration(115200,ENABLE);
+    delay_ms(1000);
     BMI055_Configuration(BMI_Frequence_10Hz);
     LED_Init();
     W25N_Configuration();
     SERVE_Configution(DISABLE);
     BUZZER_Configuration();
-    delay_ms(2000);
-    printf("acc_x  acc_y  acc_z  gyr_x  gyr_y  gyr_z\r\n");
-    delay_ms(2000);
-    BMI_ReadCmd(ENABLE);
+    LED=1; 
+    printf("has read\r\n");
+//    BMI_ReadCmd(ENABLE);
     while(1)
     {
-//        LED = !LED;
+        
     }
 }
 

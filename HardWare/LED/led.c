@@ -11,7 +11,7 @@ void LED_Init(void)
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100M
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;//上拉
     GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化GPIOA0
-    LED=1;
+    LED=0;
 } 
 
 

@@ -43,4 +43,6 @@
 .\objects\bmi055.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\bmi055.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\bmi055.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\bmi055.o: ..\HardWare\W25N\w25n.h
+.\objects\bmi055.o: ..\HardWare\BMI055\bmi055.h
 .\objects\bmi055.o: ..\HardWare\LED\led.h

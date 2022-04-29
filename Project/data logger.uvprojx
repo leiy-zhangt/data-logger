@@ -702,6 +702,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\system_stm32f4xx.c</FilePath>
             </File>
+            <File>
+              <FileName>command.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\command.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

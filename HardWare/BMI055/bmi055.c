@@ -2,8 +2,13 @@
 /*
 1、读取数据必须从LSB开始，此时MSB有保护
 2、BMI055为MSB模式，且地址项0：写入，1：读出
-
+3、数据格式  addr_addr_dataX12_0X00_0X00 共16Byte*128
 */
+
+u8 location=0,bmi_buffer[2048],n;
+int16_t acc_16,gyr_16;
+double acc,gyr;
+uint32_t data_number=0,final_number; //数据的数量 
 
 void BMI055_Configuration(BMI_Frequence frequence)
 {
@@ -61,12 +66,12 @@ void BMI055_Configuration(BMI_Frequence frequence)
     //BMI055读取速率设置
     TIM_TimeBaseStructure.TIM_Prescaler=1679;  //定时器分频
 	TIM_TimeBaseStructure.TIM_CounterMode=TIM_CounterMode_Up; //向上计数模式
-	TIM_TimeBaseStructure.TIM_Period=BMI_Frequence_10Hz;   //自动重装载值
+	TIM_TimeBaseStructure.TIM_Period=BMI_Frequence_50Hz;   //自动重装载值
 	TIM_TimeBaseStructure.TIM_ClockDivision=TIM_CKD_DIV1; 	
-	TIM_TimeBaseInit(TIM4,&TIM_TimeBaseStructure);//初始化定
+	TIM_TimeBaseInit(TIM4,&TIM_TimeBaseStructure);//初始化定时器
+    TIM_ClearITPendingBit(TIM4,TIM_IT_Update); 
     TIM_ITConfig(TIM4,TIM_IT_Update,ENABLE);
     TIM_SetCounter(TIM4,0X00);
-    TIM_ClearITPendingBit(TIM4,TIM_IT_Update); 
     TIM_Cmd(TIM4,DISABLE);
     NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;//抢占优先级0
@@ -117,7 +122,7 @@ u8 BMI055_ReadData(IMU_Choose IMU,u8 addr)
     return res;
 }
 
-int16_t BMI_DataTransform(IMU_Choose IMU,u8 data_l,u8 data_h)
+int16_t BMI055_DataTransform(IMU_Choose IMU,u8 data_l,u8 data_h)
 {
     static int16_t data;
     data=(((int16_t)data_h)<<8)|data_l;
@@ -145,28 +150,24 @@ void EXTI3_IRQHandler(void)
 
 void TIM4_IRQHandler(void)
 {
-    LED = !LED;
     if(TIM_GetITStatus(TIM4,TIM_IT_Update))
     {
-        BMI055_ReadBuffer(ACC_Choose,0X02,bmi_data,6);
+        bmi_buffer[16*location]=data_number>>24;
+        bmi_buffer[16*location+1]=data_number>>16;
+        bmi_buffer[16*location+2]=data_number>>8;
+        bmi_buffer[16*location+3]=data_number;
+        data_number++;
+        BMI055_ReadBuffer(ACC_Choose,0X02,bmi_buffer+2+16*location,6);
         delay_us(3);
-        BMI055_ReadBuffer(GYR_Choose,0X02,bmi_data+6,6);
-    }
-    for(n=0;n<6;n++)
-    {
-        if(n<3)
+        BMI055_ReadBuffer(GYR_Choose,0X02,bmi_buffer+8+16*location,6);
+        location++;
+        if(location==128)
         {
-            acc_16 = BMI_DataTransform(ACC_Choose,bmi_data[2*n],bmi_data[2*n+1]);
-            acc = acc_16/4096.00*8*9.8;
-            printf("%+0.4f  ",acc);
-        }
-        else
-        {
-            gyr_16 = BMI_DataTransform(GYR_Choose,bmi_data[2*n],bmi_data[2*n+1]);
-            gyr = gyr_16/65536.00*250;
-            printf("%+0.4f  ",gyr);
-            if(n==5) printf("\r\n");
+            location = 0;
+            W25N_DataWrirte(bmi_buffer,page);
+            page++;
         }
     }
     TIM_ClearITPendingBit(TIM4,TIM_IT_Update); 
 }
+

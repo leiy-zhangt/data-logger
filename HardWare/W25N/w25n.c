@@ -3,6 +3,8 @@
 //2KByte为一个Page，总共65536页
 //64Page为1个Block，总共1024块
 
+uint16_t page=0;
+
 void W25N_Configuration(void)
 { 
     GPIO_InitTypeDef  GPIO_InitStructure;

@@ -69,7 +69,7 @@ void USART1_Configuration(u32 bound,FunctionalState ITStatus){ //串口1初始化并启
 	GPIO_Init(GPIOA,&GPIO_InitStructure); //初始化PA9，PA10
    //Usart1 NVIC 配置
     NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=3 ;//抢占优先级3
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0 ;//抢占优先级3
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;		//子优先级3
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ITStatus;			//IRQ通道使能
 	NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器 
@@ -85,11 +85,38 @@ void USART1_Configuration(u32 bound,FunctionalState ITStatus){ //串口1初始化并启
     USART_Cmd(USART1, ENABLE);                    //使能串口 
 }
 
+//void USART1_IRQHandler(void){ //串口1中断服务程序（固定的函数名不能修改）	
+//	u8 Res;
+//	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET){  //接收中断(接收到的数据必须是0x0d 0x0a结尾)		
+//		Res=USART_ReceiveData(USART1);//读取接收到的数据
+//		printf("%c",Res); //把收到的数据发送回电脑
+//        if((USART1_RX_STA&0x8000)==0)//接收未完成
+//		{
+//			if(USART1_RX_STA&0x4000)//接收到了0x0d
+//			{
+//				if(Res!=0x0a)USART1_RX_STA=0;//接收错误,重新开始
+//				else USART1_RX_STA|=0x8000;	//接收完成了 
+//			}
+//			else //还没收到0X0D
+//			{	
+//				if(Res==0x0d)USART1_RX_STA|=0x4000;
+//				else
+//				{
+//					USART1_RX_BUF[USART1_RX_STA&0X3FFF]=Res ;
+//					USART1_RX_STA++;
+//					if(USART1_RX_STA>(USART1_REC_LEN-1))USART1_RX_STA=0;//接收数据错误,重新开始接收	  
+//				}		 
+//			}
+//		}   	
+//	} 
+//} 
+
 void USART1_IRQHandler(void){ //串口1中断服务程序（固定的函数名不能修改）	
 	u8 Res;
-	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET){  //接收中断(接收到的数据必须是0x0d 0x0a结尾)		
+	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET){  //接收中断(接收到的数据必须是0x0d 0x0a结尾)	
+        USART_ClearITPendingBit(USART1, USART_IT_RXNE);        
 		Res=USART_ReceiveData(USART1);//读取接收到的数据
-		printf("%c",Res); //把收到的数据发送回电脑
+//		printf("%c",Res); //把收到的数据发送回电脑
         if((USART1_RX_STA&0x8000)==0)//接收未完成
 		{
 			if(USART1_RX_STA&0x4000)//接收到了0x0d
@@ -107,7 +134,12 @@ void USART1_IRQHandler(void){ //串口1中断服务程序（固定的函数名不能修改）
 					if(USART1_RX_STA>(USART1_REC_LEN-1))USART1_RX_STA=0;//接收数据错误,重新开始接收	  
 				}		 
 			}
-		}   	
+            if(USART1_RX_STA&0x8000)
+            {
+                USART1_RX_STA = 0;
+                Command_Execute(USART1);
+            }
+		}          
 	} 
 } 
 #endif	
@@ -289,6 +321,10 @@ void USART3_IRQHandler(void){
 	} 
 } 
 #endif	
+
+
+
+
 
 /*
 a符号的作用：
