@@ -707,6 +707,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\command.c</FilePath>
             </File>
+            <File>
+              <FileName>computation.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\computation.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

@@ -9,8 +9,10 @@ u8 location=0,bmi_buffer[2048],n;
 int16_t acc_16,gyr_16;
 double acc,gyr;
 uint32_t data_number=0,final_number; //数据的数量 
+double dt; //积分时间步长 
+int ACC_Range,GYR_Range;  //IMU量程选择
 
-void BMI055_Configuration(BMI_Frequence frequence)
+void BMI055_Configuration(ACC_Range_Choose acc_range,GYR_Range_Choose gyr_range,BMI_Frequence frequence)
 {
     GPIO_InitTypeDef  GPIO_InitStructure;
     NVIC_InitTypeDef  NVIC_InitStructure;
@@ -59,14 +61,14 @@ void BMI055_Configuration(BMI_Frequence frequence)
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;//使能外部中断通道
     NVIC_Init(&NVIC_InitStructure);//配置
     //配置BMI055
-    BMI055_SendData(ACC_Choose,0X0F,ACC_Range_4g);//加速度计量程选择
+    BMI055_SendData(ACC_Choose,0X0F,acc_range);//加速度计量程选择
     BMI055_SendData(ACC_Choose,0X10,0X0C); //滤波器带宽选择
-    BMI055_SendData(GYR_Choose,0X0F,GYR_Range_125);//陀螺仪计量程选择
+    BMI055_SendData(GYR_Choose,0X0F,gyr_range);//陀螺仪计量程选择
     BMI055_SendData(GYR_Choose,0X10,ODR_100Hz_32BD);//陀螺仪输出速率设置 
     //BMI055读取速率设置
     TIM_TimeBaseStructure.TIM_Prescaler=1679;  //定时器分频
 	TIM_TimeBaseStructure.TIM_CounterMode=TIM_CounterMode_Up; //向上计数模式
-	TIM_TimeBaseStructure.TIM_Period=BMI_Frequence_50Hz;   //自动重装载值
+	TIM_TimeBaseStructure.TIM_Period=frequence;   //自动重装载值
 	TIM_TimeBaseStructure.TIM_ClockDivision=TIM_CKD_DIV1; 	
 	TIM_TimeBaseInit(TIM4,&TIM_TimeBaseStructure);//初始化定时器
     TIM_ClearITPendingBit(TIM4,TIM_IT_Update); 
@@ -78,6 +80,22 @@ void BMI055_Configuration(BMI_Frequence frequence)
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x00;//子优先级2
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;//使能外部中断通道
     NVIC_Init(&NVIC_InitStructure);//配置
+    //变量初始化
+    //初始化积分步长
+    if(frequence == BMI_Frequence_50Hz) dt = 0.02;
+    else if(frequence == BMI_Frequence_20Hz) dt = 0.05;
+    else if(frequence == BMI_Frequence_10Hz) dt = 0.1;
+    //加速度计量程选择
+    if(acc_range == ACC_Range_2g) ACC_Range = 4;
+    else if(acc_range == ACC_Range_4g) ACC_Range = 8;
+    else if(acc_range == ACC_Range_8g) ACC_Range = 16;
+    else if(acc_range == ACC_Range_16g) ACC_Range = 32;
+    //陀螺仪量程选择
+    if(gyr_range == GYR_Range_125) GYR_Range = 250;
+    else if(gyr_range == GYR_Range_250) GYR_Range = 500;
+    else if(gyr_range == GYR_Range_500) GYR_Range = 1000;
+    else if(gyr_range == GYR_Range_1000) GYR_Range = 2000;
+    else if(gyr_range == GYR_Range_2000) GYR_Range = 4000;
 }
 
 
@@ -148,6 +166,7 @@ void EXTI3_IRQHandler(void)
     EXTI_ClearITPendingBit(EXTI_Line3);
 }
 
+/*  FLASH存储程序
 void TIM4_IRQHandler(void)
 {
     if(TIM_GetITStatus(TIM4,TIM_IT_Update))
@@ -170,4 +189,15 @@ void TIM4_IRQHandler(void)
     }
     TIM_ClearITPendingBit(TIM4,TIM_IT_Update); 
 }
+*/
 
+void TIM4_IRQHandler(void)
+{
+    if(TIM_GetITStatus(TIM4,TIM_IT_Update))
+    {
+        double *acc = Acceleration_Get(bmi_buffer);
+        double *gyr = AngularVelocity_Get(bmi_buffer+6);
+        printf("acc:%+0.4f  %+0.4f  %+0.4f  ,gyr:%+0.4f  %+0.4f  %+0.4f  \r\n",acc[0],acc[1],acc[2],gyr[0],gyr[1],gyr[2]);
+    }
+    TIM_ClearITPendingBit(TIM4,TIM_IT_Update); 
+}

@@ -46,3 +46,8 @@
 .\objects\usart.o: ..\HardWare\BMI055\bmi055.h
 .\objects\usart.o: ..\HardWare\USART\usart.h
 .\objects\usart.o: ..\HardWare\LED\led.h
+.\objects\usart.o: ..\User\computation.h
+.\objects\usart.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\usart.o: ..\HardWare\BMI055\bmi055.h
+.\objects\usart.o: ..\User\command.h
+.\objects\usart.o: ..\User\computation.h

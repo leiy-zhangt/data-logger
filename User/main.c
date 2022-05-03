@@ -15,6 +15,7 @@ DR:¶ÁÈ¡Êý¾Ý
 #include "w25n.h"
 #include "serve.h"
 #include "buzzer.h"
+#include "computation.h"
 
 int main(void)
 { 
@@ -23,17 +24,17 @@ int main(void)
 	SPI1_Configuration();
     USART1_Configuration(115200,ENABLE);
     delay_ms(1000);
-    BMI055_Configuration(BMI_Frequence_10Hz);
+    BMI055_Configuration(ACC_Range_2g,GYR_Range_125,BMI_Frequence_10Hz);
     LED_Init();
     W25N_Configuration();
     SERVE_Configution(DISABLE);
     BUZZER_Configuration();
     LED=1; 
     printf("has read\r\n");
-//    BMI_ReadCmd(ENABLE);
+    BMI_ReadCmd(ENABLE);
     while(1)
     {
-        
+
     }
 }
 

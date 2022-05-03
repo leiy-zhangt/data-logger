@@ -46,3 +46,7 @@
 .\objects\bmi055.o: ..\HardWare\W25N\w25n.h
 .\objects\bmi055.o: ..\HardWare\BMI055\bmi055.h
 .\objects\bmi055.o: ..\HardWare\LED\led.h
+.\objects\bmi055.o: ..\User\computation.h
+.\objects\bmi055.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\bmi055.o: ..\User\command.h
+.\objects\bmi055.o: ..\User\computation.h

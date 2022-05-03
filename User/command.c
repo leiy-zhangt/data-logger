@@ -10,6 +10,7 @@ void Command_Execute(USART_TypeDef* USARTx)
     else if(command[0]=='B'&&command[1]=='E') Command_Bmi055StartWork();
     else if(command[0]=='B'&&command[1]=='D') Command_Bmi055StopWork();
     else if(command[0]=='D'&&command[1]=='R') Command_DataOutput();
+    else if(command[0]=='S'&&command[1]=='C') Command_StatusCheck();
     else printf("Command is error!\r\n");  
 }
 
@@ -22,6 +23,10 @@ void Commanad_ChipErase(void)
 void Command_Bmi055StartWork(void)
 {
     printf("BMI055 is working!\r\n");
+    q[0]=sqrt(2)/2;
+    q[1]=0;
+    q[2]=0;
+    q[3]=-sqrt(2)/2;
     location = 0;
     data_number = 0;
     page = Start_Page;
@@ -31,6 +36,7 @@ void Command_Bmi055StartWork(void)
 void Command_Bmi055StopWork(void)
 {
     BMI_ReadCmd(DISABLE);
+    TIM_SetCounter(TIM4,0X00);
     W25N_DataWrirte(bmi_buffer,page);
     final_number = data_number;
     bmi_buffer[0]=final_number>>24;
@@ -39,6 +45,11 @@ void Command_Bmi055StopWork(void)
     bmi_buffer[3]=final_number;
     W25N_DataWrirte(bmi_buffer,0X0000);
     printf("BMI055 stops working!%u points has been stored!\r\n",data_number);
+}
+
+void Command_StatusCheck(void)
+{
+    printf("Data logger has ready!\r\n");
 }
 
 void Command_DataOutput(void)
@@ -67,7 +78,7 @@ void Command_DataOutput(void)
                     if(n<3)
                     {
                         acc_16 = BMI055_DataTransform(ACC_Choose,bmi_data[2*n],bmi_data[2*n+1]);
-                        acc = acc_16/4096.00*8*9.8;
+                        acc = acc_16/4096.00*8*acc_g;
                         printf("%+0.4f  ",acc);
                     }
                     else
@@ -84,3 +95,4 @@ void Command_DataOutput(void)
     }
     else printf("FLASH is empty\r\n");
 }
+

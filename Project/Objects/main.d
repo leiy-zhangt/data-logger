@@ -46,6 +46,11 @@
 .\objects\main.o: ..\HardWare\BMI055\bmi055.h
 .\objects\main.o: ..\HardWare\USART\usart.h
 .\objects\main.o: ..\HardWare\LED\led.h
+.\objects\main.o: ..\User\computation.h
+.\objects\main.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\main.o: ..\HardWare\BMI055\bmi055.h
+.\objects\main.o: ..\User\command.h
+.\objects\main.o: ..\User\computation.h
 .\objects\main.o: ..\HardWare\IIC\iic.h
 .\objects\main.o: ..\HardWare\SERVE\serve.h
 .\objects\main.o: ..\HardWare\BUZZER\buzzer.h
