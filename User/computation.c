@@ -58,28 +58,4 @@ double * AngularVelocity_Get(u8 *buffer)
     return gyr;
 }
 
-void BMI055_DataStorage(void)
-{
-    bmi_buffer[16*location]=data_number>>24;
-    bmi_buffer[16*location+1]=data_number>>16;
-    bmi_buffer[16*location+2]=data_number>>8;
-    bmi_buffer[16*location+3]=data_number;
-    data_number++;
-    BMI055_ReadBuffer(ACC_Choose,0X02,bmi_buffer+2+16*location,6);
-    delay_us(3);
-    BMI055_ReadBuffer(GYR_Choose,0X02,bmi_buffer+8+16*location,6);
-    location++;
-    if(location==128)
-    {
-        location = 0;
-        W25N_DataWrirte(bmi_buffer,page);
-        page++;
-    }
-}
 
-void BMI055_DataDisplay(void)
-{
-    double *acc = Acceleration_Get(bmi_buffer);
-    double *gyr = AngularVelocity_Get(bmi_buffer+6);
-    printf("acc:%+0.4f  %+0.4f  %+0.4f  ,gyr:%+0.4f  %+0.4f  %+0.4f  \r\n",acc[0],acc[1],acc[2],gyr[0],gyr[1],gyr[2]);
-}

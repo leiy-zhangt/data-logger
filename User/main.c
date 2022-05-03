@@ -24,7 +24,7 @@ int main(void)
 	SPI1_Configuration();
     USART1_Configuration(115200,ENABLE);
     delay_ms(1000);
-    BMI055_Configuration(ACC_Range_2g,GYR_Range_125,BMI_Frequence_50Hz);
+    BMI055_Configuration(ACC_Range_4g,GYR_Range_125,BMI_Frequence_10Hz);
     LED_Init();
     W25N_Configuration();
     SERVE_Configution(DISABLE);

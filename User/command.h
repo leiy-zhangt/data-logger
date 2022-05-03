@@ -15,5 +15,7 @@ void Command_Bmi055StartWork(void);
 void Command_Bmi055StopWork(void);
 void Command_DataOutput(void);
 void Command_StatusCheck(void);
-
+void Command_BMI055_DataStorage(void); //BMI055数据存储操作函数
+void Command_BMI055_DataDisplay(void);//BMI055原始数据显示函数
+  
 #endif

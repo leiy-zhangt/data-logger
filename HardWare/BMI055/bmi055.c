@@ -195,7 +195,7 @@ void TIM4_IRQHandler(void)
 {
     if(TIM_GetITStatus(TIM4,TIM_IT_Update))
     {
-        
+        Command_BMI055_DataStorage();
     }
     TIM_ClearITPendingBit(TIM4,TIM_IT_Update); 
 }

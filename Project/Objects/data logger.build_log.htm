@@ -27,145 +27,7 @@ Project File Date:  05/01/2022
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\ProgramFile\Keil5\ARM\ARMCC\Bin'
 Build target 'Target 1'
-compiling usart.c...
-..\User\computation.h(19): error:  #7: unrecognized token
-  void BMI055_DataDisplay(void)；//BMI055原始数据显示函数
-..\User\computation.h(19): error:  #130: expected a "{"
-  void BMI055_DataDisplay(void)；//BMI055原始数据显示函数
-..\HardWare\BMI055\bmi055.h(45): warning:  #12-D: parsing restarts here after previous syntax error
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): error:  #20: identifier "ACC_Choose" is undefined
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): error:  #20: identifier "GYR_Choose" is undefined
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): error:  #65: expected a ";"
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): warning:  #77-D: this declaration has no storage class or type specifier
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(58): error:  #757: variable "IMU_Choose"  is not a type name
-  void BMI055_SendData(IMU_Choose IMU,u8 addr,u8 data); //BMI055发送数据函数
-..\HardWare\BMI055\bmi055.h(59): error:  #757: variable "IMU_Choose"  is not a type name
-  u8 BMI055_ReadData(IMU_Choose IMU,u8 addr); //BMI055单字节接收
-..\HardWare\BMI055\bmi055.h(60): error:  #757: variable "IMU_Choose"  is not a type name
-  void BMI055_ReadBuffer(IMU_Choose IMU,u8 addr,u8* buffer,u8 length); //BMI055数组接收
-..\HardWare\BMI055\bmi055.h(61): error:  #757: variable "IMU_Choose"  is not a type name
-  int16_t BMI055_DataTransform(IMU_Choose IMU,u8 data_l,u8 data_h); //数据转换函数
-..\HardWare\USART\usart.c(13): warning:  #260-D: explicit type is missing ("int" assumed)
-  _sys_exit(int x){ 
-..\HardWare\USART\usart.c: 3 warnings, 9 errors
-compiling computation.c...
-..\User\computation.h(19): error:  #7: unrecognized token
-  void BMI055_DataDisplay(void)；//BMI055原始数据显示函数
-..\User\computation.h(19): error:  #130: expected a "{"
-  void BMI055_DataDisplay(void)；//BMI055原始数据显示函数
-..\User\computation.c(6): warning:  #12-D: parsing restarts here after previous syntax error
-  {
-..\User\computation.c(80): error:  #247: function "BMI055_DataDisplay"  has already been defined
-  void BMI055_DataDisplay(void)
-..\User\computation.c: 1 warning, 3 errors
-compiling command.c...
-..\User\computation.h(19): error:  #7: unrecognized token
-  void BMI055_DataDisplay(void)；//BMI055原始数据显示函数
-..\User\computation.h(19): error:  #130: expected a "{"
-  void BMI055_DataDisplay(void)；//BMI055原始数据显示函数
-..\HardWare\BMI055\bmi055.h(45): warning:  #12-D: parsing restarts here after previous syntax error
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): error:  #20: identifier "ACC_Choose" is undefined
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): error:  #20: identifier "GYR_Choose" is undefined
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): error:  #65: expected a ";"
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): warning:  #77-D: this declaration has no storage class or type specifier
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(58): error:  #757: variable "IMU_Choose"  is not a type name
-  void BMI055_SendData(IMU_Choose IMU,u8 addr,u8 data); //BMI055发送数据函数
-..\HardWare\BMI055\bmi055.h(59): error:  #757: variable "IMU_Choose"  is not a type name
-  u8 BMI055_ReadData(IMU_Choose IMU,u8 addr); //BMI055单字节接收
-..\HardWare\BMI055\bmi055.h(60): error:  #757: variable "IMU_Choose"  is not a type name
-  void BMI055_ReadBuffer(IMU_Choose IMU,u8 addr,u8* buffer,u8 length); //BMI055数组接收
-..\HardWare\BMI055\bmi055.h(61): error:  #757: variable "IMU_Choose"  is not a type name
-  int16_t BMI055_DataTransform(IMU_Choose IMU,u8 data_l,u8 data_h); //数据转换函数
-..\User\command.c(76): error:  #20: identifier "ACC_Choose" is undefined
-                          acc_16 = BMI055_DataTransform(ACC_Choose,bmi_data[2*n],bmi_data[2*n+1]);
-..\User\command.c(82): error:  #20: identifier "GYR_Choose" is undefined
-                          gyr_16 = BMI055_DataTransform(GYR_Choose,bmi_data[2*n],bmi_data[2*n+1]);
-..\User\command.c: 2 warnings, 11 errors
-compiling bmi055.c...
-..\User\computation.h(19): error:  #7: unrecognized token
-  void BMI055_DataDisplay(void)；//BMI055原始数据显示函数
-..\User\computation.h(19): error:  #130: expected a "{"
-  void BMI055_DataDisplay(void)；//BMI055原始数据显示函数
-..\HardWare\BMI055\bmi055.h(45): warning:  #12-D: parsing restarts here after previous syntax error
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): error:  #20: identifier "ACC_Choose" is undefined
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): error:  #20: identifier "GYR_Choose" is undefined
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): error:  #65: expected a ";"
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): warning:  #77-D: this declaration has no storage class or type specifier
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(58): error:  #757: variable "IMU_Choose"  is not a type name
-  void BMI055_SendData(IMU_Choose IMU,u8 addr,u8 data); //BMI055发送数据函数
-..\HardWare\BMI055\bmi055.h(59): error:  #757: variable "IMU_Choose"  is not a type name
-  u8 BMI055_ReadData(IMU_Choose IMU,u8 addr); //BMI055单字节接收
-..\HardWare\BMI055\bmi055.h(60): error:  #757: variable "IMU_Choose"  is not a type name
-  void BMI055_ReadBuffer(IMU_Choose IMU,u8 addr,u8* buffer,u8 length); //BMI055数组接收
-..\HardWare\BMI055\bmi055.h(61): error:  #757: variable "IMU_Choose"  is not a type name
-  int16_t BMI055_DataTransform(IMU_Choose IMU,u8 data_l,u8 data_h); //数据转换函数
-..\HardWare\BMI055\bmi055.c(64): error:  #20: identifier "ACC_Choose" is undefined
-      BMI055_SendData(ACC_Choose,0X0F,acc_range);//加速度计量程选择
-..\HardWare\BMI055\bmi055.c(66): error:  #20: identifier "GYR_Choose" is undefined
-      BMI055_SendData(GYR_Choose,0X0F,gyr_range);//陀螺仪计量程选择
-..\HardWare\BMI055\bmi055.c(103): error:  #757: variable "IMU_Choose"  is not a type name
-  void BMI055_SendData(IMU_Choose IMU,u8 addr,u8 data)
-..\HardWare\BMI055\bmi055.c(105): error:  #20: identifier "ACC_Choose" is undefined
-      if(IMU == ACC_Choose) ACC_CS = 0;
-..\HardWare\BMI055\bmi055.c(111): error:  #20: identifier "ACC_Choose" is undefined
-      if(IMU == ACC_Choose) ACC_CS = 1;
-..\HardWare\BMI055\bmi055.c(115): error:  #757: variable "IMU_Choose"  is not a type name
-  void BMI055_ReadBuffer(IMU_Choose IMU,u8 addr,u8* buffer,u8 length)
-..\HardWare\BMI055\bmi055.c(117): error:  #20: identifier "ACC_Choose" is undefined
-      if(IMU == ACC_Choose) ACC_CS = 0;
-..\HardWare\BMI055\bmi055.c(126): error:  #20: identifier "ACC_Choose" is undefined
-      if(IMU == ACC_Choose) ACC_CS = 1;
-..\HardWare\BMI055\bmi055.c(130): error:  #757: variable "IMU_Choose"  is not a type name
-  u8 BMI055_ReadData(IMU_Choose IMU,u8 addr)
-..\HardWare\BMI055\bmi055.c(133): error:  #20: identifier "ACC_Choose" is undefined
-      if(IMU == ACC_Choose) ACC_CS = 0;
-..\HardWare\BMI055\bmi055.c(138): error:  #20: identifier "ACC_Choose" is undefined
-      if(IMU == ACC_Choose) ACC_CS = 1;
-..\HardWare\BMI055\bmi055.c(143): error:  #757: variable "IMU_Choose"  is not a type name
-  int16_t BMI055_DataTransform(IMU_Choose IMU,u8 data_l,u8 data_h)
-..\HardWare\BMI055\bmi055.c(147): error:  #20: identifier "ACC_Choose" is undefined
-      if(IMU == ACC_Choose) return data>>4;
-..\HardWare\BMI055\bmi055.c: 2 warnings, 22 errors
-compiling main.c...
-..\User\computation.h(19): error:  #7: unrecognized token
-  void BMI055_DataDisplay(void)；//BMI055原始数据显示函数
-..\User\computation.h(19): error:  #130: expected a "{"
-  void BMI055_DataDisplay(void)；//BMI055原始数据显示函数
-..\HardWare\BMI055\bmi055.h(45): warning:  #12-D: parsing restarts here after previous syntax error
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): error:  #20: identifier "ACC_Choose" is undefined
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): error:  #20: identifier "GYR_Choose" is undefined
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): error:  #65: expected a ";"
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(45): warning:  #77-D: this declaration has no storage class or type specifier
-  typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-..\HardWare\BMI055\bmi055.h(58): error:  #757: variable "IMU_Choose"  is not a type name
-  void BMI055_SendData(IMU_Choose IMU,u8 addr,u8 data); //BMI055发送数据函数
-..\HardWare\BMI055\bmi055.h(59): error:  #757: variable "IMU_Choose"  is not a type name
-  u8 BMI055_ReadData(IMU_Choose IMU,u8 addr); //BMI055单字节接收
-..\HardWare\BMI055\bmi055.h(60): error:  #757: variable "IMU_Choose"  is not a type name
-  void BMI055_ReadBuffer(IMU_Choose IMU,u8 addr,u8* buffer,u8 length); //BMI055数组接收
-..\HardWare\BMI055\bmi055.h(61): error:  #757: variable "IMU_Choose"  is not a type name
-  int16_t BMI055_DataTransform(IMU_Choose IMU,u8 data_l,u8 data_h); //数据转换函数
-..\User\main.c: 2 warnings, 9 errors
-".\Objects\data logger.axf" - 54 Error(s), 10 Warning(s).
+".\Objects\data logger.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -179,8 +41,7 @@ Package Vendor: Keil
   D:\ProgramFile\Keil5\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Target not created.
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>
