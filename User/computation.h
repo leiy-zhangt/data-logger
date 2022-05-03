@@ -15,5 +15,8 @@ double Yaw_Get(double q[]);   //偏航角计算公式
 double Roll_Get(double q[]);  //滚转角计算公式  
 double * AngularVelocity_Get(u8 *buffer); //角速度获取函数
 double * Acceleration_Get(u8 *buffer); //加速度获取函数
+void BMI055_DataStorage(void); //BMI055数据存储操作函数
+void BMI055_DataDisplay(void)；//BMI055原始数据显示函数
+    
 #endif
 

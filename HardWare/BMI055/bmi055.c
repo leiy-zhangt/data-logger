@@ -195,9 +195,7 @@ void TIM4_IRQHandler(void)
 {
     if(TIM_GetITStatus(TIM4,TIM_IT_Update))
     {
-        double *acc = Acceleration_Get(bmi_buffer);
-        double *gyr = AngularVelocity_Get(bmi_buffer+6);
-        printf("acc:%+0.4f  %+0.4f  %+0.4f  ,gyr:%+0.4f  %+0.4f  %+0.4f  \r\n",acc[0],acc[1],acc[2],gyr[0],gyr[1],gyr[2]);
+        
     }
     TIM_ClearITPendingBit(TIM4,TIM_IT_Update); 
 }

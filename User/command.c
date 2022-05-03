@@ -23,10 +23,6 @@ void Commanad_ChipErase(void)
 void Command_Bmi055StartWork(void)
 {
     printf("BMI055 is working!\r\n");
-    q[0]=sqrt(2)/2;
-    q[1]=0;
-    q[2]=0;
-    q[3]=-sqrt(2)/2;
     location = 0;
     data_number = 0;
     page = Start_Page;
