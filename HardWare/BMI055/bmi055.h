@@ -7,6 +7,7 @@
 #include "usart.h"
 #include "led.h"
 #include "computation.h"
+#include "command.h"
 
 #define ACC_CS PCout(0)
 #define GYR_CS PCout(2) 
@@ -53,6 +54,8 @@ extern double acc,gyr;
 extern uint32_t data_number,final_number; //数据的数量 
 extern double dt;
 extern int ACC_Range,GYR_Range;  //IMU量程选择
+extern double bmi055_offset[6]; //bmi055数据偏移量
+extern const uint16_t page_max;
 
 void BMI055_Configuration(ACC_Range_Choose acc_range,GYR_Range_Choose gyr_range,BMI_Frequence frequence); //MI055初始化函数
 void BMI055_SendData(IMU_Choose IMU,u8 addr,u8 data); //BMI055发送数据函数

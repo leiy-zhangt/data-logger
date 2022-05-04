@@ -11,6 +11,8 @@ double acc,gyr;
 uint32_t data_number=0,final_number; //数据的数量 
 double dt; //积分时间步长 
 int ACC_Range,GYR_Range;  //IMU量程选择
+double bmi055_offset[6] = {0,0,0,0,0,0};
+const uint16_t page_max = 65530;
 
 void BMI055_Configuration(ACC_Range_Choose acc_range,GYR_Range_Choose gyr_range,BMI_Frequence frequence)
 {
@@ -166,36 +168,14 @@ void EXTI3_IRQHandler(void)
     EXTI_ClearITPendingBit(EXTI_Line3);
 }
 
-/*  FLASH存储程序
-void TIM4_IRQHandler(void)
-{
-    if(TIM_GetITStatus(TIM4,TIM_IT_Update))
-    {
-        bmi_buffer[16*location]=data_number>>24;
-        bmi_buffer[16*location+1]=data_number>>16;
-        bmi_buffer[16*location+2]=data_number>>8;
-        bmi_buffer[16*location+3]=data_number;
-        data_number++;
-        BMI055_ReadBuffer(ACC_Choose,0X02,bmi_buffer+2+16*location,6);
-        delay_us(3);
-        BMI055_ReadBuffer(GYR_Choose,0X02,bmi_buffer+8+16*location,6);
-        location++;
-        if(location==128)
-        {
-            location = 0;
-            W25N_DataWrirte(bmi_buffer,page);
-            page++;
-        }
-    }
-    TIM_ClearITPendingBit(TIM4,TIM_IT_Update); 
-}
-*/
 
 void TIM4_IRQHandler(void)
 {
     if(TIM_GetITStatus(TIM4,TIM_IT_Update))
     {
-        Command_BMI055_DataStorage();
+        if(Command_Flag == 0) Command_BMI055_DataStorage();
+        else if(Command_Flag == 1) Command_BMI055_DataDisplay();
+        else if(Command_Flag == 2)Command_AttitudeSolution();
     }
     TIM_ClearITPendingBit(TIM4,TIM_IT_Update); 
 }

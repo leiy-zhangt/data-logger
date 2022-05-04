@@ -9,7 +9,7 @@
 
 extern double dq[4],w[3],q[4],pitch,yaw,roll;
 
-void AttitudeSolution(double q[],double w[]);
+void AttitudeSolution(double q[],double w[]);//姿态解算算法，角速度单位为°/s
 double Pitch_Get(double q[]); //俯仰角计算公式
 double Yaw_Get(double q[]);   //偏航角计算公式
 double Roll_Get(double q[]);  //滚转角计算公式  
