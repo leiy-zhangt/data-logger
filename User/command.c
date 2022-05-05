@@ -134,16 +134,9 @@ void Command_BMI055_DataDisplay(void)
 
 void Command_AttitudeSolution(void)
 {
-    double q_norm;
     u8 buffer[6];
     double *gyr = AngularVelocity_Get(buffer);
     AttitudeSolution(q,gyr);
-    q_norm = q[0]*q[0]+q[1]*q[1]+q[2]*q[2]+q[3]*q[3];
-    q_norm = sqrt(q_norm);
-    q[0] = q[0]/q_norm;
-    q[1] = q[1]/q_norm;
-    q[2] = q[2]/q_norm;
-    q[3] = q[3]/q_norm;
     pitch = Pitch_Get(q)*180/PI;
     yaw = Yaw_Get(q)*180/PI;
     roll = Roll_Get(q)*180/PI;
@@ -169,3 +162,4 @@ void Command_BMI055_OFFSET(void)
     bmi055_offset[5] = bmi055_offset[5]/100.0;
     printf("BMI055 offset has finished!\r\n");
 }
+

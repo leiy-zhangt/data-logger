@@ -33,11 +33,7 @@ int main(void)
     SERVE_Configution(DISABLE);
     BUZZER_Configuration();
     LED=1; 
-    printf("has read\r\n");
-    q[0]=1;
-    q[1]=0;
-    q[2]=0;
-    q[3]=0;
+    printf("DATA LOGGER has read\r\n");
 //    BMI_ReadCmd(ENABLE);
     while(1)
     {
