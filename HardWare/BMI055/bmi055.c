@@ -176,6 +176,9 @@ void TIM4_IRQHandler(void)
         if(Command_Flag == 0) Command_BMI055_DataStorage();
         else if(Command_Flag == 1) Command_BMI055_DataDisplay();
         else if(Command_Flag == 2)Command_AttitudeSolution();
+        else if(Command_Flag == 3)Command_AccelerationDisplay();
+        else if(Command_Flag == 4)Command_VelocityDisplay();
+        else if(Command_Flag == 5)Command_PositionDisplay();
     }
     TIM_ClearITPendingBit(TIM4,TIM_IT_Update); 
 }

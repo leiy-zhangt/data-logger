@@ -16,6 +16,10 @@ void Command_Execute(USART_TypeDef* USARTx)
     else if(command[0]=='B'&&command[1]=='O') Command_BMI055_OFFSET();
     else if(command[0]=='D'&&command[1]=='D') {Command_Flag = 1; Command_Bmi055StartWork();}
     else if(command[0]=='A'&&command[1]=='S') {Command_Flag = 2; Command_Bmi055StartWork();}
+    else if(command[0]=='Q'&&command[1]=='I') Command_Q_Init(q);
+    else if(command[0]=='A'&&command[1]=='D') {Command_Flag = 3; Command_Bmi055StartWork();}
+    else if(command[0]=='V'&&command[1]=='D') {Command_Flag = 4; Command_Bmi055StartWork();}
+    else if(command[0]=='P'&&command[1]=='D') {Command_Flag = 5; Command_Bmi055StartWork();}
     else printf("Command is error!\r\n");  
 }
 
@@ -27,11 +31,17 @@ void Commanad_ChipErase(void)
 
 void Command_Bmi055StartWork(void)
 {
+    q[0] = 1;
+    q[1] = 0;
+    q[2] = 0;
+    q[3] = 0;
+    velocity_n[0] = 0;
+    velocity_n[1] = 0;
+    velocity_n[2] = 0;
+    position_n[0] = 0;
+    position_n[1] = 0;
+    position_n[2] = 0;
     printf("BMI055 is working!\r\n");
-    q[0]=1;
-    q[1]=0;
-    q[2]=0;
-    q[3]=0;
     location = 0;
     data_number = 0;
     page = Start_Page;
@@ -42,14 +52,19 @@ void Command_Bmi055StopWork(void)
 {
     BMI_ReadCmd(DISABLE);
     TIM_SetCounter(TIM4,0X00);
-    W25N_DataWrirte(bmi_buffer,page);
-    final_number = data_number;
-    bmi_buffer[0]=final_number>>24;
-    bmi_buffer[1]=final_number>>16;
-    bmi_buffer[2]=final_number>>8;
-    bmi_buffer[3]=final_number;
-    W25N_DataWrirte(bmi_buffer,0X0000);
-    printf("BMI055 stops working!%u points has been stored!\r\n",data_number);
+    delay_us(5);
+    printf("BMI055 stops working!");
+    if(Command_Flag == 0)
+    {
+        W25N_DataWrirte(bmi_buffer,page);
+        final_number = data_number;
+        bmi_buffer[0]=final_number>>24;
+        bmi_buffer[1]=final_number>>16;
+        bmi_buffer[2]=final_number>>8;
+        bmi_buffer[3]=final_number;
+        W25N_DataWrirte(bmi_buffer,0X0000);
+        printf("BMI055 stops working!%u points has been stored!\r\n",data_number);
+    }
 }
 
 void Command_StatusCheck(void)
@@ -127,15 +142,19 @@ void Command_BMI055_DataStorage(void)
 
 void Command_BMI055_DataDisplay(void)
 {
-    double *acc = Acceleration_Get(bmi_buffer);
-    double *gyr = AngularVelocity_Get(bmi_buffer+6);
+    u8 buffer[6];
+    double acc[3]; 
+    double gyr[3];
+    AngularVelocity_Get(buffer,gyr); 
+    Acceleration_Get(buffer,acc);
     printf("acc:%+0.4f  %+0.4f  %+0.4f  ,gyr:%+0.4f  %+0.4f  %+0.4f  \r\n",acc[0],acc[1],acc[2],gyr[0],gyr[1],gyr[2]);
 }
 
 void Command_AttitudeSolution(void)
 {
     u8 buffer[6];
-    double *gyr = AngularVelocity_Get(buffer);
+    double gyr[3];
+    AngularVelocity_Get(buffer,gyr);
     AttitudeSolution(q,gyr);
     pitch = Pitch_Get(q)*180/PI;
     yaw = Yaw_Get(q)*180/PI;
@@ -151,7 +170,8 @@ void Command_BMI055_OFFSET(void)
     for(n=0;n<6;n++) bmi055_offset[n] = 0;
     for(n=0;n<100;n++)
     {
-        double *gyr_offset =  AngularVelocity_Get(buffer);
+        double gyr_offset[3];
+        AngularVelocity_Get(buffer,gyr_offset);
         bmi055_offset[3] = bmi055_offset[3]+gyr_offset[0];
         bmi055_offset[4] = bmi055_offset[4]+gyr_offset[1];
         bmi055_offset[5] = bmi055_offset[5]+gyr_offset[2];
@@ -161,5 +181,49 @@ void Command_BMI055_OFFSET(void)
     bmi055_offset[4] = bmi055_offset[4]/100.0;
     bmi055_offset[5] = bmi055_offset[5]/100.0;
     printf("BMI055 offset has finished!\r\n");
+}
+
+void Command_Q_Init(double *q)
+{
+    double Euler[3];
+    AttitudeAngle_Init(Euler);
+    yaw = Euler[0]*PI/180;
+    pitch = Euler[1]*PI/180;
+    roll = Euler[2]*PI/180;
+    T_11 = cos(roll)*cos(yaw)-sin(roll)*sin(pitch)*sin(yaw);
+    T_21 = cos(roll)*sin(yaw)+sin(roll)*sin(pitch)*cos(yaw);
+    T_31 = -sin(roll)*-cos(pitch);
+    T_12 = -cos(pitch)*sin(yaw);
+    T_22 = cos(pitch)*cos(yaw);
+    T_32 = sin(pitch);
+    T_13 = sin(roll)*cos(yaw)+cos(roll)*sin(pitch)*sin(yaw);
+    T_23 = sin(roll)*sin(yaw)-cos(roll)*sin(pitch)*cos(yaw);
+    T_33 = cos(roll)*cos(pitch);
+    q[0] = 0.5*sqrt(1+T_11+T_22+T_33);
+    q[1] = 0.5*sqrt(1+T_11-T_22-T_33);
+    q[2] = 0.5*sqrt(1-T_11+T_22-T_33);
+    q[3] = 0.5*sqrt(1-T_11-T_22+T_33);
+    if((T_32 - T_23)<0) q[1] = -q[1];
+    if((T_13 - T_31)<0) q[2] = -q[2];
+    if((T_21 - T_12)<0) q[3] = -q[3];
+    printf("Q initialization has finished!\r\n");
+}
+
+void Command_AccelerationDisplay(void)
+{
+    AccelerationSolution();
+    printf("acc_x:%+0.4f   acc_y:%+0.4f   acc_z:%+0.4f\r\n",acceleration_n[0],acceleration_n[1],acceleration_n[2]);
+}
+
+void Command_VelocityDisplay(void)
+{
+    VelociteySolution();
+    printf("velocity_x:%+0.4f   velocity_y:%+0.4f   velocity_z:%+0.4f\r\n",velocity_n[0],velocity_n[1],velocity_n[2]);
+}
+
+void Command_PositionDisplay(void)
+{
+    PositionSolution();
+    printf("position_x:%+0.4f   position_y:%+0.4f   position_z:%+0.4f\r\n",position_n[0],position_n[1],position_n[2]);
 }
 

@@ -52,7 +52,7 @@ extern u8 location,bmi_buffer[2048],n;
 extern int16_t acc_16,gyr_16;
 extern double acc,gyr;
 extern uint32_t data_number,final_number; //数据的数量 
-extern double dt;
+extern double dt;//积分时间步长
 extern int ACC_Range,GYR_Range;  //IMU量程选择
 extern double bmi055_offset[6]; //bmi055数据偏移量
 extern const uint16_t page_max;

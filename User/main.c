@@ -7,6 +7,8 @@ DR:读取数据
 DD:显示原始数据
 AS:显示解算后的姿态角
 BO:消除偏移量
+QI：四元数初始化
+AD:加速度显示
 */
 #include "sys.h"
 #include "delay.h"
@@ -27,7 +29,7 @@ int main(void)
 	SPI1_Configuration();
     USART1_Configuration(115200,ENABLE);
     delay_ms(1000);
-    BMI055_Configuration(ACC_Range_2g,GYR_Range_250,BMI_Frequence_50Hz);
+    BMI055_Configuration(ACC_Range_2g,GYR_Range_125,BMI_Frequence_50Hz);
     LED_Init();
     W25N_Configuration();
     SERVE_Configution(DISABLE);
