@@ -63,7 +63,7 @@ void Command_Bmi055StopWork(void)
         bmi_buffer[2]=final_number>>8;
         bmi_buffer[3]=final_number;
         W25N_DataWrirte(bmi_buffer,0X0000);
-        printf("BMI055 stops working!%u points has been stored!\r\n",data_number);
+        printf("%u points has been stored!\r\n",data_number);
     }
 }
 
@@ -147,7 +147,8 @@ void Command_BMI055_DataDisplay(void)
     double gyr[3];
     AngularVelocity_Get(buffer,gyr); 
     Acceleration_Get(buffer,acc);
-    printf("acc:%+0.4f  %+0.4f  %+0.4f  ,gyr:%+0.4f  %+0.4f  %+0.4f  \r\n",acc[0],acc[1],acc[2],gyr[0],gyr[1],gyr[2]);
+    printf("acc: %+0.4f  %+0.4f  %+0.4f  ,gyr: %+0.4f  %+0.4f  %+0.4f  \r\n",acc[0],acc[1],acc[2],gyr[0],gyr[1],gyr[2]);
+//    printf("%+0.4f  %+0.4f  %+0.4f  %+0.4f  %+0.4f  %+0.4f  \r\n",acc[0],acc[1],acc[2],gyr[0],gyr[1],gyr[2]);
 }
 
 void Command_AttitudeSolution(void)
@@ -159,27 +160,38 @@ void Command_AttitudeSolution(void)
     pitch = Pitch_Get(q)*180/PI;
     yaw = Yaw_Get(q)*180/PI;
     roll = Roll_Get(q)*180/PI;
-    printf("pitch:%+0.4f  yaw:%+0.4f  roll:%+0.4f\r\n",pitch,yaw,roll);    
+    printf("pitch: %+0.4f  yaw: %+0.4f  roll: %+0.4f\r\n",pitch,yaw,roll);    
 }
 
 void Command_BMI055_OFFSET(void)
 {
-    u8 n;
+    uint16_t n;
     u8 buffer[6];
+    double acc_offset[3],gyr_offset[3],offset[6];
     printf("BMI055 offset is starting!\r\n");
-    for(n=0;n<6;n++) bmi055_offset[n] = 0;
-    for(n=0;n<100;n++)
+    for(n=0;n<6;n++)
     {
-        double gyr_offset[3];
+        bmi055_offset[n] = 0;
+        offset[n] = 0;
+    }
+    for(n=0;n<500;n++)
+    {
+        Acceleration_Get(buffer,acc_offset);
         AngularVelocity_Get(buffer,gyr_offset);
-        bmi055_offset[3] = bmi055_offset[3]+gyr_offset[0];
-        bmi055_offset[4] = bmi055_offset[4]+gyr_offset[1];
-        bmi055_offset[5] = bmi055_offset[5]+gyr_offset[2];
+        offset[0] = offset[0]+acc_offset[0];
+        offset[1] = offset[1]+acc_offset[1];
+        offset[2] = offset[2]+acc_offset[2];
+        offset[3] = offset[3]+gyr_offset[0];
+        offset[4] = offset[4]+gyr_offset[1];
+        offset[5] = offset[5]+gyr_offset[2];
         delay_ms(20);
     }
-    bmi055_offset[3] = bmi055_offset[3]/100.0;
-    bmi055_offset[4] = bmi055_offset[4]/100.0;
-    bmi055_offset[5] = bmi055_offset[5]/100.0;
+    bmi055_offset[0] = offset[0]/500.0;
+    bmi055_offset[1] = offset[1]/500.0;
+    bmi055_offset[2] = offset[2]/500.0-acc_g;
+    bmi055_offset[3] = offset[3]/500.0;
+    bmi055_offset[4] = offset[4]/500.0;
+    bmi055_offset[5] = offset[5]/500.0;
     printf("BMI055 offset has finished!\r\n");
 }
 
@@ -212,18 +224,19 @@ void Command_Q_Init(double *q)
 void Command_AccelerationDisplay(void)
 {
     AccelerationSolution();
-    printf("acc_x:%+0.4f   acc_y:%+0.4f   acc_z:%+0.4f\r\n",acceleration_n[0],acceleration_n[1],acceleration_n[2]);
+    printf("acc_x: %+0.4f   acc_y: %+0.4f   acc_z: %+0.4f\r\n",acceleration_n[0],acceleration_n[1],acceleration_n[2]);
+//    printf("%+0.4f   %+0.4f   %+0.4f\r\n",acceleration_n[0],acceleration_n[1],acceleration_n[2]);
 }
 
 void Command_VelocityDisplay(void)
 {
     VelociteySolution();
-    printf("velocity_x:%+0.4f   velocity_y:%+0.4f   velocity_z:%+0.4f\r\n",velocity_n[0],velocity_n[1],velocity_n[2]);
+    printf("velocity_x: %+0.4f   velocity_y: %+0.4f   velocity_z: %+0.4f\r\n",velocity_n[0],velocity_n[1],velocity_n[2]);
 }
 
 void Command_PositionDisplay(void)
 {
     PositionSolution();
-    printf("position_x:%+0.4f   position_y:%+0.4f   position_z:%+0.4f\r\n",position_n[0],position_n[1],position_n[2]);
+    printf("position_x: %+0.4f   position_y: %+0.4f   position_z: %+0.4f\r\n",position_n[0],position_n[1],position_n[2]);
 }
 

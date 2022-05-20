@@ -43,6 +43,7 @@
 ".\objects\w25n.o"
 ".\objects\serve.o"
 ".\objects\buzzer.o"
+".\objects\bmp388.o"
 ".\objects\delay.o"
 ".\objects\sys.o"
 ".\objects\main.o"

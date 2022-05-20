@@ -18,6 +18,7 @@ AD:加速度显示
 #include "led.h"  
 #include "bmi055.h"
 #include "w25n.h"
+#include "bmp388.h"
 #include "serve.h"
 #include "buzzer.h"
 #include "computation.h"
@@ -34,12 +35,13 @@ int main(void)
     W25N_Configuration();
     SERVE_Configution(DISABLE);
     BUZZER_Configuration();
-    LED=1; 
+    BMP388_Configuration();
     printf("DATA LOGGER has read\r\n");
-//    BMI_ReadCmd(ENABLE);
     while(1)
     {
-
+//        double temp;
+//        temp = BMP388_TemperatureGet();
+//        delay_ms(100);
     }
 }
 

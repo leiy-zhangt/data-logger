@@ -7,7 +7,7 @@
 #include "bmi055.h"
 #include "computation.h"
 
-#define acc_g 9.7911
+#define acc_g 9.8
 
 extern u8 Command_Flag;//ÃüÁî±êÖ¾Î»
 
