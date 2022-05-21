@@ -455,7 +455,7 @@ Section Cross References
     bmp388.o(i.BMP388_Configuration) refers to bmp388.o(i.BMP388_SendData) for BMP388_SendData
     bmp388.o(i.BMP388_Configuration) refers to delay.o(i.delay_ms) for delay_ms
     bmp388.o(i.BMP388_Configuration) refers to bmp388.o(.bss) for BMP388_Calibration_QuantizedData
-    bmp388.o(i.BMP388_PressureGet) refers to bmp388.o(i.BMP388_TemperatureGet_char) for BMP388_TemperatureGet_char
+    bmp388.o(i.BMP388_PressureGet) refers to bmp388.o(i.BMP388_PressureGet_char) for BMP388_PressureGet_char
     bmp388.o(i.BMP388_PressureGet) refers to dmul.o(x$fpl$dmul) for __aeabi_dmul
     bmp388.o(i.BMP388_PressureGet) refers to pow.o(i.__hardfp_pow) for __hardfp_pow
     bmp388.o(i.BMP388_PressureGet) refers to daddsub_clz.o(x$fpl$dadd) for __aeabi_dadd
@@ -471,7 +471,7 @@ Section Cross References
     bmp388.o(i.BMP388_SendData) refers to delay.o(i.delay_us) for delay_us
     bmp388.o(i.BMP388_SendData) refers to spi.o(i.SPI_ReadWriteByte) for SPI_ReadWriteByte
     bmp388.o(i.BMP388_StatusGet) refers to bmp388.o(i.BMP388_ReadData) for BMP388_ReadData
-    bmp388.o(i.BMP388_TemperatureGet) refers to bmp388.o(i.BMP388_PressureGet_char) for BMP388_PressureGet_char
+    bmp388.o(i.BMP388_TemperatureGet) refers to bmp388.o(i.BMP388_TemperatureGet_char) for BMP388_TemperatureGet_char
     bmp388.o(i.BMP388_TemperatureGet) refers to dflt_clz.o(x$fpl$dflt) for __aeabi_i2d
     bmp388.o(i.BMP388_TemperatureGet) refers to daddsub_clz.o(x$fpl$dsub) for __aeabi_dsub
     bmp388.o(i.BMP388_TemperatureGet) refers to dmul.o(x$fpl$dmul) for __aeabi_dmul
