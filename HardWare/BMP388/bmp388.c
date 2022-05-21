@@ -94,7 +94,7 @@ double BMP388_TemperatureGet(void)
     int32_t uncomp_temp = 0;
     double partial_data1;
     double partial_data2;
-    BMP388_TemperatureGet_char(tem_buffer);
+    BMP388_PressureGet_char(tem_buffer);
     uncomp_temp = ((int32_t)tem_buffer[2]<<16)|((int32_t)tem_buffer[1]<<8)|((int32_t)tem_buffer[0]);
     partial_data1 = (double)(uncomp_temp - BMP388_Calibration_QuantizedData.par_t1);
     partial_data2 = (double)(partial_data1 * BMP388_Calibration_QuantizedData.par_t2);
