@@ -20,6 +20,9 @@ void Command_Execute(USART_TypeDef* USARTx)
     else if(command[0]=='A'&&command[1]=='D') {Command_Flag = 3; Command_Bmi055StartWork();}
     else if(command[0]=='V'&&command[1]=='D') {Command_Flag = 4; Command_Bmi055StartWork();}
     else if(command[0]=='P'&&command[1]=='D') {Command_Flag = 5; Command_Bmi055StartWork();}
+    else if(command[0]=='F'&&command[1]=='U') {acceleration_test = 1;printf("unlock\r\n");}
+    else if(command[0]=='F'&&command[1]=='L') {acceleration_test = 0;printf("lock\r\n");}
+    else if(command[0]=='F'&&command[1]=='S') EN_SERVE = 1;
     else printf("Command is error!\r\n");  
 }
 
@@ -118,14 +121,15 @@ void Command_DataOutput(void)
 
 void Command_BMI055_DataStorage(void)
 {
+    double acc[3],gyr[3];
     bmi_buffer[16*location]=data_number>>24;
     bmi_buffer[16*location+1]=data_number>>16;
     bmi_buffer[16*location+2]=data_number>>8;
     bmi_buffer[16*location+3]=data_number;
     data_number++;
-    BMI055_ReadBuffer(ACC_Choose,0X02,bmi_buffer+4+16*location,6);
+    Acceleration_Get(bmi_buffer+4+16*location,acc);
     delay_us(3);
-    BMI055_ReadBuffer(GYR_Choose,0X02,bmi_buffer+10+16*location,6);
+    AngularVelocity_Get(bmi_buffer+10+16*location,gyr);
     location++;
     if(location==128)
     {
@@ -138,6 +142,15 @@ void Command_BMI055_DataStorage(void)
             printf("FLASH is full!\r\n");
         }
     }
+    if(acceleration_test) 
+    {
+        if(acc[0]>20) 
+        {
+            FIRE_Flag = 1;
+            acceleration_test = 0;
+        }
+    }
+    if(FIRE_Flag == 1) time_count++;
 }
 
 void Command_BMI055_DataDisplay(void)

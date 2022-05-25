@@ -13,6 +13,8 @@ double dt; //积分时间步长
 int ACC_Range,GYR_Range;  //IMU量程选择
 double bmi055_offset[6] = {0,0,0,0,0,0};
 const uint16_t page_max = 65530;
+u8 FIRE_Flag = 0,acceleration_test = 0;
+uint32_t time_count = 0;
 
 void BMI055_Configuration(ACC_Range_Choose acc_range,GYR_Range_Choose gyr_range,BMI_Frequence frequence)
 {
@@ -173,8 +175,8 @@ void TIM4_IRQHandler(void)
 {
     if(TIM_GetITStatus(TIM4,TIM_IT_Update))
     {
-        if(Command_Flag == 0) Command_BMI055_DataStorage();
-        else if(Command_Flag == 1) Command_BMI055_DataDisplay();
+        if(Command_Flag == 0)Command_BMI055_DataStorage();
+        else if(Command_Flag == 1)Command_BMI055_DataDisplay();
         else if(Command_Flag == 2)Command_AttitudeSolution();
         else if(Command_Flag == 3)Command_AccelerationDisplay();
         else if(Command_Flag == 4)Command_VelocityDisplay();
