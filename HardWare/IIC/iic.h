@@ -4,7 +4,7 @@
 #include "sys.h"
 
 #define EN_I2C1 1		//使能I2C1
-#define EN_I2C2 0		//使能I2C2
+#define EN_I2C2 1		//使能I2C2
 
 #define I2C1_Speed 350000
 #define I2C2_Speed 350000

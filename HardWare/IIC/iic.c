@@ -101,15 +101,16 @@ u8 I2C_ReadByte(I2C_TypeDef* I2C,u8 SlaveAddr,u8 ReadAddr)      //I2C¶ÁÈ¡Ò»¸ö×Ö½
 	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_MODE_SELECT));
 	I2C_Send7bitAddress(I2C,SlaveAddr,I2C_Direction_Transmitter); 
 	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));
-//	I2C_Cmd(I2C1,ENABLE);
-	I2C_SendData(I2C1,ReadAddr);
+	I2C_SendData(I2C,ReadAddr);
 	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_BYTE_TRANSMITTED));
 	I2C_GenerateSTART(I2C,ENABLE);
-	while(!I2C_CheckEvent(I2C1,I2C_EVENT_MASTER_MODE_SELECT));
+	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_MODE_SELECT));
 	I2C_Send7bitAddress(I2C,SlaveAddr,I2C_Direction_Receiver);
 	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED));
 	I2C_AcknowledgeConfig(I2C,DISABLE); //×îºóÓÐÒ»¸öÊý¾ÝÊ±¹Ø±ÕÓ¦´ðÎ»
 	I2C_GenerateSTOP(I2C,ENABLE);	//×îºóÒ»¸öÊý¾ÝÊ±Ê¹ÄÜÍ£Ö¹Î»
+    I2C_AcknowledgeConfig(I2C,ENABLE);
+    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_BYTE_RECEIVED));
 	return I2C_ReceiveData(I2C);
 }
 

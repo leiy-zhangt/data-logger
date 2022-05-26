@@ -8,7 +8,9 @@ DD:显示原始数据
 AS:显示解算后的姿态角
 BO:消除偏移量
 QI：四元数初始化
-AD:加速度显示
+AD:惯性空间加速度显示
+VD:惯性空间速度显示
+PD:惯性空间位置显示
 */
 #include "sys.h"
 #include "delay.h"
@@ -28,6 +30,8 @@ int main(void)
     RCC_Configuration();
     NVIC_Configuration();
 	SPI1_Configuration();
+    I2C1_Configuration();
+    I2C2_Configuration();
     USART1_Configuration(115200,ENABLE);
     delay_ms(1000);
     BMI055_Configuration(ACC_Range_2g,GYR_Range_125,BMI_Frequence_50Hz);
@@ -39,9 +43,11 @@ int main(void)
     printf("DATA LOGGER has read\r\n");
     while(1)
     {
-//        double temp;
-//        temp = BMP388_TemperatureGet();
-//        delay_ms(100);
+        volatile u8 add = 0X0D<<1,res;
+        res = I2C_ReadByte(I2C1,add,0X0D);
+        I2C_ReadBuffer(I2C1,add,0X0D,&res,1);
+        delay_ms(1000);
+        
     }
 }
 
