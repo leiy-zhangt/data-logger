@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Basic\inc;..\HardWare\IIC;..\HardWare\SPI;..\HardWare\USART;..\HardWare\W25N;..\System\delay;..\System\sys;..\User;..\CMSIS;..\HardWare\BMI055;..\HardWare\LED;..\HardWare\SERVE;..\HardWare\BUZZER;..\HardWare\BMP388</IncludePath>
+              <IncludePath>..\Basic\inc;..\HardWare\IIC;..\HardWare\SPI;..\HardWare\USART;..\HardWare\W25N;..\System\delay;..\System\sys;..\User;..\CMSIS;..\HardWare\BMI055;..\HardWare\LED;..\HardWare\SERVE;..\HardWare\BUZZER;..\HardWare\BMP388;..\HardWare\QMC5883L</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -671,6 +671,11 @@
               <FileName>bmp388.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HardWare\BMP388\bmp388.c</FilePath>
+            </File>
+            <File>
+              <FileName>qmc5883l.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardWare\QMC5883L\qmc5883l.c</FilePath>
             </File>
           </Files>
         </Group>

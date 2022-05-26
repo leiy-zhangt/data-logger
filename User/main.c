@@ -21,6 +21,7 @@ PD:惯性空间位置显示
 #include "bmi055.h"
 #include "w25n.h"
 #include "bmp388.h"
+#include "qmc5883l.h"
 #include "serve.h"
 #include "buzzer.h"
 #include "computation.h"
@@ -40,14 +41,14 @@ int main(void)
     SERVE_Configution(DISABLE);
     BUZZER_Configuration();
     BMP388_Configuration();
+    QMC5883L_Configuration();
     printf("DATA LOGGER has read\r\n");
     while(1)
     {
-        volatile u8 add = 0X0D<<1,res;
-        res = I2C_ReadByte(I2C1,add,0X0D);
-        res = I2C_ReadByte(I2C1,add,0X0B);
-//        I2C_ReadBuffer(I2C1,add,0X0B,&res,1);
-//        I2C_ReadBuffer(I2C1,add,0X0D,&res,1);
+        u8 buffer[6];
+        volatile double data[3],tem;
+        QMC5883L_MagnetismRead(buffer,data);
+        tem = QMC5883L_TemperatureRead();
         delay_ms(1000);
         
     }

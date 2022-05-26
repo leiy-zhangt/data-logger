@@ -44,6 +44,7 @@
 ".\objects\serve.o"
 ".\objects\buzzer.o"
 ".\objects\bmp388.o"
+".\objects\qmc5883l.o"
 ".\objects\delay.o"
 ".\objects\sys.o"
 ".\objects\main.o"
