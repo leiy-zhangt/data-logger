@@ -45,7 +45,9 @@ int main(void)
     {
         volatile u8 add = 0X0D<<1,res;
         res = I2C_ReadByte(I2C1,add,0X0D);
-        I2C_ReadBuffer(I2C1,add,0X0D,&res,1);
+        res = I2C_ReadByte(I2C1,add,0X0B);
+//        I2C_ReadBuffer(I2C1,add,0X0B,&res,1);
+//        I2C_ReadBuffer(I2C1,add,0X0D,&res,1);
         delay_ms(1000);
         
     }

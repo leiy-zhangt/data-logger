@@ -96,6 +96,7 @@ void I2C_SendBuffer(I2C_TypeDef* I2C,u8 SlaveAddr,u8 WriteAddr,u8 *buffer,u16 le
 
 u8 I2C_ReadByte(I2C_TypeDef* I2C,u8 SlaveAddr,u8 ReadAddr)      //I2C¶ÁÈ¡Ò»¸ö×Ö½Ú
 { 
+    u8 res;
 	while(I2C_GetFlagStatus(I2C,I2C_FLAG_BUSY));
 	I2C_GenerateSTART(I2C,ENABLE);
 	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_MODE_SELECT));
@@ -109,9 +110,10 @@ u8 I2C_ReadByte(I2C_TypeDef* I2C,u8 SlaveAddr,u8 ReadAddr)      //I2C¶ÁÈ¡Ò»¸ö×Ö½
 	while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED));
 	I2C_AcknowledgeConfig(I2C,DISABLE); //×îºóÓÐÒ»¸öÊý¾ÝÊ±¹Ø±ÕÓ¦´ðÎ»
 	I2C_GenerateSTOP(I2C,ENABLE);	//×îºóÒ»¸öÊý¾ÝÊ±Ê¹ÄÜÍ£Ö¹Î»
+    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_BYTE_RECEIVED));\
+    res = I2C_ReceiveData(I2C);
     I2C_AcknowledgeConfig(I2C,ENABLE);
-    while(!I2C_CheckEvent(I2C,I2C_EVENT_MASTER_BYTE_RECEIVED));
-	return I2C_ReceiveData(I2C);
+	return res;
 }
 
 void I2C_ReadBuffer(I2C_TypeDef* I2C,u8 SlaveAddr,u8 ReadAddr,u8* buffer,u16 length)
