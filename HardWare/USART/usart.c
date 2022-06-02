@@ -21,6 +21,8 @@ int fputc(int ch, FILE *f){
 }
 #endif 
 
+USART_MODE_Selection USART_MODE;
+
 
 /*
 USART1串口相关程序
@@ -111,37 +113,89 @@ void USART1_Configuration(u32 bound,FunctionalState ITStatus){ //串口1初始化并启
 //	} 
 //} 
 
+//void USART1_IRQHandler(void){ //串口1中断服务程序（固定的函数名不能修改）	
+//	u8 Res;
+//	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET){  //接收中断(接收到的数据必须是0x0d 0x0a结尾)	
+//        USART_ClearITPendingBit(USART1, USART_IT_RXNE);        
+//		Res=USART_ReceiveData(USART1);//读取接收到的数据
+////		printf("%c",Res); //把收到的数据发送回电脑
+//        if((USART1_RX_STA&0x8000)==0)//接收未完成
+//		{
+//			if(USART1_RX_STA&0x4000)//接收到了0x0d
+//			{
+//				if(Res!=0x0a)USART1_RX_STA=0;//接收错误,重新开始
+//				else USART1_RX_STA|=0x8000;	//接收完成了 
+//			}
+//			else //还没收到0X0D
+//			{	
+//				if(Res==0x0d)USART1_RX_STA|=0x4000;
+//				else
+//				{
+//					USART1_RX_BUF[USART1_RX_STA&0X3FFF]=Res ;
+//					USART1_RX_STA++;
+//					if(USART1_RX_STA>(USART1_REC_LEN-1))USART1_RX_STA=0;//接收数据错误,重新开始接收	  
+//				}		 
+//			}
+//            if(USART1_RX_STA&0x8000)
+//            {
+//                USART1_RX_STA = 0;
+//                Command_Execute(USART1);
+//            }
+//		}          
+//	} 
+//} 
+
 void USART1_IRQHandler(void){ //串口1中断服务程序（固定的函数名不能修改）	
 	u8 Res;
-	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET){  //接收中断(接收到的数据必须是0x0d 0x0a结尾)	
-        USART_ClearITPendingBit(USART1, USART_IT_RXNE);        
-		Res=USART_ReceiveData(USART1);//读取接收到的数据
-//		printf("%c",Res); //把收到的数据发送回电脑
-        if((USART1_RX_STA&0x8000)==0)//接收未完成
-		{
-			if(USART1_RX_STA&0x4000)//接收到了0x0d
-			{
-				if(Res!=0x0a)USART1_RX_STA=0;//接收错误,重新开始
-				else USART1_RX_STA|=0x8000;	//接收完成了 
-			}
-			else //还没收到0X0D
-			{	
-				if(Res==0x0d)USART1_RX_STA|=0x4000;
-				else
-				{
-					USART1_RX_BUF[USART1_RX_STA&0X3FFF]=Res ;
-					USART1_RX_STA++;
-					if(USART1_RX_STA>(USART1_REC_LEN-1))USART1_RX_STA=0;//接收数据错误,重新开始接收	  
-				}		 
-			}
-            if(USART1_RX_STA&0x8000)
+    switch(USART_MODE)
+    {
+        case Command_Receice:
+        {
+            if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET){  //接收中断(接收到的数据必须是0x0d 0x0a结尾)	
+                USART_ClearITPendingBit(USART1, USART_IT_RXNE);        
+                Res=USART_ReceiveData(USART1);//读取接收到的数据
+        //		printf("%c",Res); //把收到的数据发送回电脑
+                if((USART1_RX_STA&0x8000)==0)//接收未完成
+                {
+                    if(USART1_RX_STA&0x4000)//接收到了0x0d
+                    {
+                        if(Res!=0x0a)USART1_RX_STA=0;//接收错误,重新开始
+                        else USART1_RX_STA|=0x8000;	//接收完成了 
+                    }
+                    else //还没收到0X0D
+                    {	
+                        if(Res==0x0d)USART1_RX_STA|=0x4000;
+                        else
+                        {
+                            USART1_RX_BUF[USART1_RX_STA&0X3FFF]=Res ;
+                            USART1_RX_STA++;
+                            if(USART1_RX_STA>(USART1_REC_LEN-1))USART1_RX_STA=0;//接收数据错误,重新开始接收	  
+                        }		 
+                    }
+                    if(USART1_RX_STA&0x8000)
+                    {
+                        USART1_RX_STA = 0;
+                        Command_Execute(USART1);
+                    }
+                }          
+            } 
+            break;
+        }
+        case Transfer:
+        {
+            if(USART_GetITStatus(USART1,USART_IT_RXNE) != RESET)
             {
-                USART1_RX_STA = 0;
-                Command_Execute(USART1);
+                USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+                Res=USART_ReceiveData(USART1);
+                USART_ITConfig(USART1, USART_IT_RXNE,DISABLE);
+                USART_SendData(USART2,Res);
+                USART_ITConfig(USART1, USART_IT_RXNE,ENABLE);
             }
-		}          
-	} 
+            break;
+        }
+    }
 } 
+
 #endif	
 
 /*
@@ -207,31 +261,43 @@ void USART2_Configuration(u32 bound,FunctionalState ITStatus){ //串口1初始化并启
     USART_Cmd(USART2, ENABLE);                    //使能串口 
 }
 
+//void USART2_IRQHandler(void){ //串口2中断服务程序（固定的函数名不能修改）	
+//    u8 Res;
+//	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET){  //接收中断(接收到的数据必须是0x0d 0x0a结尾)		
+//		Res=USART_ReceiveData(USART2);//读取接收到的数据
+//		printf("%c",Res); //把收到的数据发送回电脑
+//        if((USART2_RX_STA&0x8000)==0)//接收未完成
+//		{
+//			if(USART2_RX_STA&0x4000)//接收到了0x0d
+//			{
+//				if(Res!=0x0a)USART2_RX_STA=0;//接收错误,重新开始
+//				else USART2_RX_STA|=0x8000;	//接收完成了 
+//			}
+//			else //还没收到0X0D
+//			{	
+//				if(Res==0x0d)USART2_RX_STA|=0x4000;
+//				else
+//				{
+//					USART2_RX_BUF[USART2_RX_STA&0X3FFF]=Res ;
+//					USART2_RX_STA++;
+//					if(USART2_RX_STA>(USART2_REC_LEN-1))USART2_RX_STA=0;//接收数据错误,重新开始接收	  
+//				}		 
+//			}
+//		}   	
+//	} 
+//} 
+
 void USART2_IRQHandler(void){ //串口2中断服务程序（固定的函数名不能修改）	
     u8 Res;
-	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET){  //接收中断(接收到的数据必须是0x0d 0x0a结尾)		
-		Res=USART_ReceiveData(USART2);//读取接收到的数据
-		printf("%c",Res); //把收到的数据发送回电脑
-        if((USART2_RX_STA&0x8000)==0)//接收未完成
-		{
-			if(USART2_RX_STA&0x4000)//接收到了0x0d
-			{
-				if(Res!=0x0a)USART2_RX_STA=0;//接收错误,重新开始
-				else USART2_RX_STA|=0x8000;	//接收完成了 
-			}
-			else //还没收到0X0D
-			{	
-				if(Res==0x0d)USART2_RX_STA|=0x4000;
-				else
-				{
-					USART2_RX_BUF[USART2_RX_STA&0X3FFF]=Res ;
-					USART2_RX_STA++;
-					if(USART2_RX_STA>(USART2_REC_LEN-1))USART2_RX_STA=0;//接收数据错误,重新开始接收	  
-				}		 
-			}
-		}   	
+	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET){  //接收中断(接收到的数据必须是0x0d 0x0a结尾)	
+        USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+		Res=USART_ReceiveData(USART2);
+        USART_ITConfig(USART2, USART_IT_RXNE,DISABLE);
+        USART_SendData(USART1,Res);
+        USART_ITConfig(USART2, USART_IT_RXNE,ENABLE);
 	} 
 } 
+
 #endif	
 
 

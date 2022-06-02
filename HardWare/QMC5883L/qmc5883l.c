@@ -45,7 +45,6 @@ void QMC5883L_MagnetismRead(uint8_t *buffer,double *data)
         data[1] = 0;
         data[2] = 0;
     }
-    return data;
 }
 
 double QMC5883L_TemperatureRead(void)

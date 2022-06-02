@@ -24,6 +24,7 @@ PD:惯性空间位置显示
 #include "qmc5883l.h"
 #include "serve.h"
 #include "buzzer.h"
+#include "atgm336h.h"
 #include "computation.h"
 
 int main(void)
@@ -34,6 +35,7 @@ int main(void)
     I2C1_Configuration();
     I2C2_Configuration();
     USART1_Configuration(115200,ENABLE);
+    USART2_Configuration(9600,ENABLE);
     delay_ms(1000);
     BMI055_Configuration(ACC_Range_2g,GYR_Range_125,BMI_Frequence_50Hz);
     LED_Init();
@@ -42,14 +44,11 @@ int main(void)
     BUZZER_Configuration();
     BMP388_Configuration();
     QMC5883L_Configuration();
+    ATGM336H_Configuration();
     printf("DATA LOGGER has read\r\n");
+    LED = 1;
     while(1)
     {
-        u8 buffer[6];
-        volatile double data[3],tem;
-        QMC5883L_MagnetismRead(buffer,data);
-        tem = QMC5883L_TemperatureRead();
-        delay_ms(1000);
         
     }
 }

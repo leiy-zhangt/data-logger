@@ -56,3 +56,4 @@
 .\objects\main.o: ..\HardWare\QMC5883L\qmc5883l.h
 .\objects\main.o: ..\HardWare\SERVE\serve.h
 .\objects\main.o: ..\HardWare\BUZZER\buzzer.h
+.\objects\main.o: ..\HardWare\ATGM336H\atgm336h.h

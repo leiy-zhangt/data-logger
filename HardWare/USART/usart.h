@@ -18,6 +18,8 @@
 #define EN_USART1 			1		//Ê¹ÄÜ£¨1£©/½ûÖ¹£¨0£©´®¿Ú1
 #define EN_USART2 			1		//Ê¹ÄÜ£¨1£©/½ûÖ¹£¨0£©´®¿Ú2
 #define EN_USART3 			1		//Ê¹ÄÜ£¨1£©/½ûÖ¹£¨0£©´®¿Ú3
+
+typedef enum{Command_Receice = 1,Transfer = 2}USART_MODE_Selection;
 	  	
 extern u8  USART1_RX_BUF[USART1_REC_LEN]; //½ÓÊÕ»º³å,×î´óUSART_REC_LEN¸ö×Ö½Ú.Ä©×Ö½ÚÎª»»ÐÐ·û 
 extern u8  USART2_RX_BUF[USART2_REC_LEN]; //½ÓÊÕ»º³å,×î´óUSART_REC_LEN¸ö×Ö½Ú.Ä©×Ö½ÚÎª»»ÐÐ·û
@@ -26,6 +28,8 @@ extern u8  USART3_RX_BUF[USART3_REC_LEN]; //½ÓÊÕ»º³å,×î´óUSART_REC_LEN¸ö×Ö½Ú.Ä©×
 extern u16 USART1_RX_STA;         		//½ÓÊÕ×´Ì¬±ê¼Ç	
 extern u16 USART2_RX_STA;         		//½ÓÊÕ×´Ì¬±ê¼Ç	
 extern u16 USART3_RX_STA;         		//½ÓÊÕ×´Ì¬±ê¼Ç	
+
+extern USART_MODE_Selection USART_MODE;
 
 //º¯ÊýÉùÃ÷
 void USART1_Configuration(u32 bound,FunctionalState ITStatus);//´®¿Ú1³õÊ¼»¯²¢Æô¶¯
