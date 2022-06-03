@@ -16,6 +16,8 @@ const uint16_t page_max = 65530;
 
 void BMI055_Configuration(ACC_Range_Choose acc_range,GYR_Range_Choose gyr_range,BMI_Frequence frequence)
 {
+    u8 *char_addr,n;
+    double *double_addr;
     GPIO_InitTypeDef  GPIO_InitStructure;
     NVIC_InitTypeDef  NVIC_InitStructure;
 	EXTI_InitTypeDef  EXTI_InitStructure;
@@ -98,6 +100,14 @@ void BMI055_Configuration(ACC_Range_Choose acc_range,GYR_Range_Choose gyr_range,
     else if(gyr_range == GYR_Range_500) GYR_Range = 1000;
     else if(gyr_range == GYR_Range_1000) GYR_Range = 2000;
     else if(gyr_range == GYR_Range_2000) GYR_Range = 4000;
+    W25N_DataReceive(bmi_buffer,0X00);
+    char_addr = bmi_buffer;
+    double_addr = (double *)char_addr;
+    for(n = 0;n<6;n++)
+    {
+        bmi055_offset[n] = *double_addr;
+        double_addr++;
+    }
 }
 
 

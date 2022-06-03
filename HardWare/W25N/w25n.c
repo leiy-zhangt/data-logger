@@ -2,6 +2,8 @@
 
 //2KByte为一个Page，总共65536页
 //64Page为1个Block，总共1024块
+//第64页为已保存的数据量
+//第1页为传感器偏移量
 
 uint16_t page=0;
 
@@ -24,7 +26,7 @@ void W25N_Configuration(void)
 }  
 
 void W25N_WriteEnable(void)
-{
+{  
     W25N_CS = 0;
     delay_us(1);
     SPI_ReadWriteByte(SPI1,0X06);

@@ -75,9 +75,22 @@ void AngularVelocity_Get(u8 *buffer,double *gyr)
 
 void AttitudeAngle_Init(double *Euler)
 {
+    double acc[3],sum[3] = {0,0,0};
+    u8 n,buffer[6];
+    for(n = 0;n<5;n++)
+    {
+        Acceleration_Get(buffer,acc);
+        sum[0] = sum[0]+acc[0];
+        sum[1] = sum[1]+acc[1];
+        sum[2] = sum[2]+acc[2];
+        delay_ms(50);
+    }
+    acc[0] = sum[0]/5.0;
+    acc[1] = sum[1]/5.0;
+    acc[2] = sum[2]/5.0;
     Euler[0] = 0;
-    Euler[1] = 0;
-    Euler[2] = 0;
+    Euler[1] = asin(acc[0]/acc_g);
+    Euler[2] = atan2(acc[1],acc[2]);
 }
 
 void AccelerationSolution(void)

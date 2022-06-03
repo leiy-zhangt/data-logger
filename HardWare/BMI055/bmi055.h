@@ -41,7 +41,6 @@
 #define ODR_2000Hz_523BD 0X10
 
 #define BMI_ReadCmd(status) TIM_Cmd(TIM4,status) 
-#define Start_Page 1
 
 typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
 typedef enum {BMI_Frequence_10Hz = 4999,BMI_Frequence_20Hz = 2499,BMI_Frequence_50Hz = 999}BMI_Frequence;

@@ -35,16 +35,16 @@ int main(void)
     I2C1_Configuration();
     I2C2_Configuration();
     USART1_Configuration(115200,ENABLE);
-    USART2_Configuration(9600,ENABLE);
+    USART2_Configuration(9600,DISABLE);
     delay_ms(1000);
+    W25N_Configuration();
     BMI055_Configuration(ACC_Range_2g,GYR_Range_125,BMI_Frequence_50Hz);
     LED_Init();
-    W25N_Configuration();
     SERVE_Configution(DISABLE);
     BUZZER_Configuration();
     BMP388_Configuration();
-    QMC5883L_Configuration();
-    ATGM336H_Configuration();
+//    QMC5883L_Configuration();
+    ATGM336H_Configuration(); 
     printf("DATA LOGGER has read\r\n");
     LED = 1;
     while(1)

@@ -25,16 +25,16 @@ void Command_Execute(USART_TypeDef* USARTx)
 
 void Commanad_ChipErase(void)
 {
-    W25N_ChipErase();
+    uint16_t block;
+    for(block = 1;block<1024;block++)
+    {
+        W25N_BlockErase(block);
+    }
     printf("W25N has been erased\r\n");
 }
 
 void Command_Bmi055StartWork(void)
 {
-    q[0] = 1;
-    q[1] = 0;
-    q[2] = 0;
-    q[3] = 0;
     velocity_n[0] = 0;
     velocity_n[1] = 0;
     velocity_n[2] = 0;
@@ -53,7 +53,7 @@ void Command_Bmi055StopWork(void)
     BMI_ReadCmd(DISABLE);
     TIM_SetCounter(TIM4,0X00);
     delay_us(5);
-    printf("BMI055 stops working!");
+    printf("BMI055 stops working!\r\n");
     if(Command_Flag == 0)
     {
         W25N_DataWrirte(bmi_buffer,page);
@@ -62,7 +62,7 @@ void Command_Bmi055StopWork(void)
         bmi_buffer[1]=final_number>>16;
         bmi_buffer[2]=final_number>>8;
         bmi_buffer[3]=final_number;
-        W25N_DataWrirte(bmi_buffer,0X0000);
+        W25N_DataWrirte(bmi_buffer,64);
         printf("%u points has been stored!\r\n",data_number);
     }
 }
@@ -77,7 +77,8 @@ void Command_DataOutput(void)
     data_number = 0;
     page = Start_Page;
     final_number = 0;
-    W25N_DataReceive(bmi_buffer,0X0000);
+    printf("q init: %0.6f %0.6f %0.6f %0.6f\r\n",q[0],q[1],q[2],q[3]);
+    W25N_DataReceive(bmi_buffer,64);
     final_number|=(bmi_buffer[0]<<24);
     final_number|=(bmi_buffer[1]<<16);
     final_number|=(bmi_buffer[2]<<8);
@@ -98,13 +99,13 @@ void Command_DataOutput(void)
                     if(n<3)
                     {
                         acc_16 = BMI055_DataTransform(ACC_Choose,bmi_data[2*n],bmi_data[2*n+1]);
-                        acc = acc_16/4096.00*ACC_Range*acc_g;
+                        acc = acc_16/4096.00*ACC_Range*acc_g-bmi055_offset[n];
                         printf("%+0.4f  ",acc);
                     }
                     else
                     {
                         gyr_16 = BMI055_DataTransform(GYR_Choose,bmi_data[2*n],bmi_data[2*n+1]);
-                        gyr = gyr_16/65536.00*GYR_Range;
+                        gyr = gyr_16/65536.00*GYR_Range-bmi055_offset[n];
                         printf("%+0.4f  ",gyr);
                         if(n==5) printf("\r\n");
                     }
@@ -167,8 +168,10 @@ void Command_BMI055_OFFSET(void)
 {
     uint16_t n;
     u8 buffer[6];
-    double acc_offset[3],gyr_offset[3],offset[6];
+    u8 *char_addr;
+    double acc_offset[3],gyr_offset[3],offset[6],*double_addr;
     printf("BMI055 offset is starting!\r\n");
+    W25N_BlockErase(0);
     for(n=0;n<6;n++)
     {
         bmi055_offset[n] = 0;
@@ -192,6 +195,18 @@ void Command_BMI055_OFFSET(void)
     bmi055_offset[3] = offset[3]/500.0;
     bmi055_offset[4] = offset[4]/500.0;
     bmi055_offset[5] = offset[5]/500.0;
+    double_addr = bmi055_offset;
+    char_addr = (uint8_t *)double_addr;
+    for(n = 0;n<2048;n++)
+    {
+        if(n<48)
+        {
+            bmi_buffer[n] = *char_addr;
+            char_addr++;
+        }
+        else bmi_buffer[n]=0XFF;
+    }
+    W25N_DataWrirte(bmi_buffer,0X0000);
     printf("BMI055 offset has finished!\r\n");
 }
 
@@ -199,12 +214,12 @@ void Command_Q_Init(double *q)
 {
     double Euler[3];
     AttitudeAngle_Init(Euler);
-    yaw = Euler[0]*PI/180;
-    pitch = Euler[1]*PI/180;
-    roll = Euler[2]*PI/180;
+    yaw = Euler[0];
+    pitch = Euler[1];
+    roll = Euler[2];
     T_11 = cos(roll)*cos(yaw)-sin(roll)*sin(pitch)*sin(yaw);
     T_21 = cos(roll)*sin(yaw)+sin(roll)*sin(pitch)*cos(yaw);
-    T_31 = -sin(roll)*-cos(pitch);
+    T_31 = -sin(roll)*cos(pitch);
     T_12 = -cos(pitch)*sin(yaw);
     T_22 = cos(pitch)*cos(yaw);
     T_32 = sin(pitch);

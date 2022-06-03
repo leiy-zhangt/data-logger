@@ -19,5 +19,6 @@ void ATGM336H_Configuration(void)
     ATGM336H_RST = 0;
     delay_ms(50);
     ATGM336H_RST = 1;
-    USART_MODE = Transfer;
+    USART_MODE = Command_Receice;
+    ATGM336H_PWR = 0;
 }

@@ -4,6 +4,8 @@
 #include "spi.h"
 #include "delay.h"	
 
+#define Start_Page 65 //数据初始保存页
+
 #define W25N_Port  GPIOA
 #define W25N_CS_Pin  GPIO_Pin_11
 #define W25N_WP_Pin  GPIO_Pin_12
