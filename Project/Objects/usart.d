@@ -51,3 +51,5 @@
 .\objects\usart.o: ..\HardWare\BMI055\bmi055.h
 .\objects\usart.o: ..\User\command.h
 .\objects\usart.o: ..\User\computation.h
+.\objects\usart.o: ..\HardWare\SERVE\serve.h
+.\objects\usart.o: ..\Control\control.h

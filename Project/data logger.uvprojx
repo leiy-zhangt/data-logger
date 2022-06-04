@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Basic\inc;..\HardWare\IIC;..\HardWare\SPI;..\HardWare\USART;..\HardWare\W25N;..\System\delay;..\System\sys;..\User;..\CMSIS;..\HardWare\BMI055;..\HardWare\LED;..\HardWare\SERVE;..\HardWare\BUZZER;..\HardWare\BMP388;..\HardWare\QMC5883L;..\HardWare\ATGM336H</IncludePath>
+              <IncludePath>..\Basic\inc;..\HardWare\IIC;..\HardWare\SPI;..\HardWare\USART;..\HardWare\W25N;..\System\delay;..\System\sys;..\User;..\CMSIS;..\HardWare\BMI055;..\HardWare\LED;..\HardWare\SERVE;..\HardWare\BUZZER;..\HardWare\BMP388;..\HardWare\QMC5883L;..\HardWare\ATGM336H;..\Control</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -726,6 +726,16 @@
               <FileName>computation.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\computation.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Control</GroupName>
+          <Files>
+            <File>
+              <FileName>control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Control\control.c</FilePath>
             </File>
           </Files>
         </Group>

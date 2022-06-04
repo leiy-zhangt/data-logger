@@ -20,6 +20,8 @@ void Command_Execute(USART_TypeDef* USARTx)
     else if(command[0]=='A'&&command[1]=='D') {Command_Flag = 3; Command_Bmi055StartWork();}
     else if(command[0]=='V'&&command[1]=='D') {Command_Flag = 4; Command_Bmi055StartWork();}
     else if(command[0]=='P'&&command[1]=='D') {Command_Flag = 5; Command_Bmi055StartWork();}
+    else if(command[0]=='E'&&command[1]=='C') {Control_Flag = 1;printf("Control ENABLE!\r\n");}
+    else if(command[0]=='D'&&command[1]=='C') {Control_Flag = 0;printf("Control DISABLE!\r\n");}
     else printf("Command is error!\r\n");  
 }
 
@@ -51,6 +53,7 @@ void Command_Bmi055StartWork(void)
 void Command_Bmi055StopWork(void)
 {
     BMI_ReadCmd(DISABLE);
+    Control_Flag = 0;
     TIM_SetCounter(TIM4,0X00);
     delay_us(5);
     printf("BMI055 stops working!\r\n");
@@ -119,14 +122,17 @@ void Command_DataOutput(void)
 
 void Command_BMI055_DataStorage(void)
 {
+    double acc[3],gyr[3],serve[4],serve_sum[4];
+    LED = 1;
     bmi_buffer[16*location]=data_number>>24;
     bmi_buffer[16*location+1]=data_number>>16;
     bmi_buffer[16*location+2]=data_number>>8;
     bmi_buffer[16*location+3]=data_number;
     data_number++;
-    BMI055_ReadBuffer(ACC_Choose,0X02,bmi_buffer+4+16*location,6);
-    delay_us(3);
-    BMI055_ReadBuffer(GYR_Choose,0X02,bmi_buffer+10+16*location,6);
+    Acceleration_Get(bmi_buffer+4+16*location,acc);
+//    BMI055_ReadBuffer(ACC_Choose,0X02,bmi_buffer+4+16*location,6);
+    AngularVelocity_Get(bmi_buffer+10+16*location,gyr);
+//    BMI055_ReadBuffer(GYR_Choose,0X02,bmi_buffer+10+16*location,6);
     location++;
     if(location==128)
     {
@@ -138,6 +144,28 @@ void Command_BMI055_DataStorage(void)
             Command_Bmi055StopWork();
             printf("FLASH is full!\r\n");
         }
+    }
+    if(Control_Flag == 1) if(acc[0]>5) Control_Flag = 2;
+    if(Control_Flag == 2)
+    {
+        AttitudeSolution(q,gyr);
+        pitch = Pitch_Get(q);
+        roll = Roll_Get(q);
+        PitchChannel_Output(PID_Output(&PITCH_Coefficient,pitch,80.0/180.0*PI),serve);
+        serve_sum[0] = serve[0];
+        serve_sum[1] = serve[1];
+        serve_sum[2] = serve[2];
+        serve_sum[3] = serve[3];
+        RollChannel_Output(PID_Output(&ROLL_Coefficient,roll,0),serve);
+        serve_sum[0] = serve_sum[0] + serve[0];
+        serve_sum[1] = serve_sum[1] + serve[1];
+        serve_sum[2] = serve_sum[2] + serve[2];
+        serve_sum[3] = serve_sum[3] + serve[3];
+        CH1_Angle_Set(serve[0]*180/PI);
+        CH2_Angle_Set(serve[1]*180/PI);
+        CH3_Angle_Set(serve[2]*180/PI);
+        CH4_Angle_Set(serve[3]*180/PI);
+        LED = 0;
     }
 }
 

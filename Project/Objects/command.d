@@ -51,3 +51,5 @@
 .\objects\command.o: D:\ProgramFile\Keil5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\command.o: ..\HardWare\BMI055\bmi055.h
 .\objects\command.o: ..\User\command.h
+.\objects\command.o: ..\Control\control.h
+.\objects\command.o: ..\HardWare\SERVE\serve.h

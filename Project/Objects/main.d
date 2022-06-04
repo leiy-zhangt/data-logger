@@ -51,9 +51,10 @@
 .\objects\main.o: ..\HardWare\BMI055\bmi055.h
 .\objects\main.o: ..\User\command.h
 .\objects\main.o: ..\User\computation.h
+.\objects\main.o: ..\HardWare\SERVE\serve.h
+.\objects\main.o: ..\Control\control.h
 .\objects\main.o: ..\HardWare\IIC\iic.h
 .\objects\main.o: ..\HardWare\BMP388\bmp388.h
 .\objects\main.o: ..\HardWare\QMC5883L\qmc5883l.h
-.\objects\main.o: ..\HardWare\SERVE\serve.h
 .\objects\main.o: ..\HardWare\BUZZER\buzzer.h
 .\objects\main.o: ..\HardWare\ATGM336H\atgm336h.h

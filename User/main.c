@@ -11,6 +11,8 @@ QI：四元数初始化
 AD:惯性空间加速度显示
 VD:惯性空间速度显示
 PD:惯性空间位置显示
+EC:使能控制功能
+DE:失能控制功能
 */
 #include "sys.h"
 #include "delay.h"
@@ -40,7 +42,7 @@ int main(void)
     W25N_Configuration();
     BMI055_Configuration(ACC_Range_2g,GYR_Range_125,BMI_Frequence_50Hz);
     LED_Init();
-    SERVE_Configution(DISABLE);
+    SERVE_Configution(ENABLE);
     BUZZER_Configuration();
     BMP388_Configuration();
 //    QMC5883L_Configuration();

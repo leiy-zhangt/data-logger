@@ -52,3 +52,5 @@
 .\objects\atgm336h.o: ..\HardWare\BMI055\bmi055.h
 .\objects\atgm336h.o: ..\User\command.h
 .\objects\atgm336h.o: ..\User\computation.h
+.\objects\atgm336h.o: ..\HardWare\SERVE\serve.h
+.\objects\atgm336h.o: ..\Control\control.h

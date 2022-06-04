@@ -50,3 +50,5 @@
 .\objects\computation.o: ..\HardWare\LED\led.h
 .\objects\computation.o: ..\User\computation.h
 .\objects\computation.o: ..\User\command.h
+.\objects\computation.o: ..\HardWare\SERVE\serve.h
+.\objects\computation.o: ..\Control\control.h

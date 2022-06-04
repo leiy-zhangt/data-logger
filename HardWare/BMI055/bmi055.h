@@ -8,6 +8,7 @@
 #include "led.h"
 #include "computation.h"
 #include "command.h"
+#include "control.h"
 
 #define ACC_CS PCout(0)
 #define GYR_CS PCout(2) 
@@ -19,17 +20,6 @@
 #define GYR_Port GPIOC
 #define GYR_CS_Pin GPIO_Pin_2
 #define GYR_INT_Pin GPIO_Pin_3
-
-//#define ACC_Range_2g 0X03
-//#define ACC_Range_4g 0X05
-//#define ACC_Range_8g 0X08
-//#define ACC_Range_16g 0X0C
-
-//#define GYR_Range_125 0X04
-//#define GYR_Range_250 0X03
-//#define GYR_Range_500 0X02
-//#define GYR_Range_1000 0X01
-//#define GYR_Range_2000 0X00
 
 #define ODR_100Hz_32BD 0X07
 #define ODR_200Hz_65BD 0X06
