@@ -43,6 +43,20 @@ void Command_Bmi055StartWork(void)
     position_n[0] = 0;
     position_n[1] = 0;
     position_n[2] = 0;
+    PITCH_Coefficient.P = PITCH_P;
+    PITCH_Coefficient.I = PITCH_I;
+    PITCH_Coefficient.D = PITCH_D;
+    PITCH_Coefficient.bias = 0;
+    PITCH_Coefficient.bias_d = 0;
+    PITCH_Coefficient.bias_i = 0;
+    PITCH_Coefficient.bias_pre = 0;
+    ROLL_Coefficient.P = ROLL_P;
+    ROLL_Coefficient.I = ROLL_I;
+    ROLL_Coefficient.D = ROLL_D;
+    ROLL_Coefficient.bias = 0;
+    ROLL_Coefficient.bias_d = 0;
+    ROLL_Coefficient.bias_i = 0;
+    ROLL_Coefficient.bias_pre = 0;
     printf("BMI055 is working!\r\n");
     location = 0;
     data_number = 0;
@@ -123,7 +137,6 @@ void Command_DataOutput(void)
 void Command_BMI055_DataStorage(void)
 {
     double acc[3],gyr[3],serve[4],serve_sum[4];
-    LED = 1;
     bmi_buffer[16*location]=data_number>>24;
     bmi_buffer[16*location+1]=data_number>>16;
     bmi_buffer[16*location+2]=data_number>>8;
@@ -151,21 +164,24 @@ void Command_BMI055_DataStorage(void)
         AttitudeSolution(q,gyr);
         pitch = Pitch_Get(q);
         roll = Roll_Get(q);
-        PitchChannel_Output(PID_Output(&PITCH_Coefficient,pitch,80.0/180.0*PI),serve);
+        RollChannel_Output(PID_Output(&ROLL_Coefficient,roll,0),serve);
         serve_sum[0] = serve[0];
         serve_sum[1] = serve[1];
         serve_sum[2] = serve[2];
         serve_sum[3] = serve[3];
-        RollChannel_Output(PID_Output(&ROLL_Coefficient,roll,0),serve);
-        serve_sum[0] = serve_sum[0] + serve[0];
-        serve_sum[1] = serve_sum[1] + serve[1];
-        serve_sum[2] = serve_sum[2] + serve[2];
-        serve_sum[3] = serve_sum[3] + serve[3];
-        CH1_Angle_Set(serve[0]*180/PI);
-        CH2_Angle_Set(serve[1]*180/PI);
-        CH3_Angle_Set(serve[2]*180/PI);
-        CH4_Angle_Set(serve[3]*180/PI);
-        LED = 0;
+        PitchChannel_Output(PID_Output(&PITCH_Coefficient,pitch,0/180.0*PI),serve);        
+        serve_sum[0] = serve_sum[0] + serve[0] + PI/2;
+        serve_sum[1] = serve_sum[1] + serve[1] + PI/2;
+        serve_sum[2] = serve_sum[2] + serve[2] + PI/2;
+        serve_sum[3] = serve_sum[3] + serve[3] + PI/2;
+        serve_sum[0] = serve_sum[0]>PI ? PI : serve_sum[0];
+        serve_sum[1] = serve_sum[1]>PI ? PI : serve_sum[1];
+        serve_sum[2] = serve_sum[2]>PI ? PI : serve_sum[2];
+        serve_sum[3] = serve_sum[3]>PI ? PI : serve_sum[3];
+        CH1_Angle_Set(serve_sum[0]*180/PI);
+        CH2_Angle_Set(serve_sum[1]*180/PI);
+        CH3_Angle_Set(serve_sum[2]*180/PI);
+        CH4_Angle_Set(serve_sum[3]*180/PI);
     }
 }
 

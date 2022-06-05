@@ -4,6 +4,13 @@
 #include "sys.h"
 #include "command.h"
 
+#define PITCH_P 3
+#define PITCH_I 0
+#define PITCH_D 0
+#define ROLL_P 3
+#define ROLL_I 0
+#define ROLL_D 0
+
 typedef struct
 {
     double P;

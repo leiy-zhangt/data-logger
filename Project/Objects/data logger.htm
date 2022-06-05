@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\data logger.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\data logger.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sat Jun 04 23:43:14 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Jun 05 12:43:42 2022
 <BR><P>
 <H3>Maximum Stack Usage =        512 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1067,7 +1067,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM4_IRQHandler
 </UL>
 
-<P><STRONG><a name="[d3]"></a>Command_BMI055_DataStorage</STRONG> (Thumb, 986 bytes, Stack size 160 bytes, command.o(i.Command_BMI055_DataStorage))
+<P><STRONG><a name="[d3]"></a>Command_BMI055_DataStorage</STRONG> (Thumb, 1340 bytes, Stack size 160 bytes, command.o(i.Command_BMI055_DataStorage))
 <BR><BR>[Stack]<UL><LI>Max Depth = 496 + Unknown Stack Size
 <LI>Call Chain = Command_BMI055_DataStorage &rArr; Roll_Get &rArr; __hardfp_pow &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf
 </UL>
@@ -1083,9 +1083,9 @@ Global Symbols
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Roll_Get
-<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RollChannel_Output
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RollChannel_Output
 <LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Pitch_Get
-<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PitchChannel_Output
+<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PitchChannel_Output
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Output
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AttitudeSolution
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AngularVelocity_Get
@@ -1112,7 +1112,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Command_Execute
 </UL>
 
-<P><STRONG><a name="[e0]"></a>Command_Bmi055StartWork</STRONG> (Thumb, 86 bytes, Stack size 8 bytes, command.o(i.Command_Bmi055StartWork))
+<P><STRONG><a name="[e0]"></a>Command_Bmi055StartWork</STRONG> (Thumb, 202 bytes, Stack size 8 bytes, command.o(i.Command_Bmi055StartWork))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152 + Unknown Stack Size
 <LI>Call Chain = Command_Bmi055StartWork &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
@@ -1374,7 +1374,7 @@ Global Symbols
 <P><STRONG><a name="[b]"></a>PendSV_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.PendSV_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f40_41xxx.o(RESET)
 </UL>
-<P><STRONG><a name="[d8]"></a>PitchChannel_Output</STRONG> (Thumb, 102 bytes, Stack size 16 bytes, control.o(i.PitchChannel_Output))
+<P><STRONG><a name="[d9]"></a>PitchChannel_Output</STRONG> (Thumb, 102 bytes, Stack size 16 bytes, control.o(i.PitchChannel_Output))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = PitchChannel_Output &rArr; __aeabi_ddiv
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
@@ -1513,7 +1513,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_Configuration
 </UL>
 
-<P><STRONG><a name="[d9]"></a>RollChannel_Output</STRONG> (Thumb, 102 bytes, Stack size 16 bytes, control.o(i.RollChannel_Output))
+<P><STRONG><a name="[d8]"></a>RollChannel_Output</STRONG> (Thumb, 102 bytes, Stack size 16 bytes, control.o(i.RollChannel_Output))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = RollChannel_Output &rArr; __aeabi_ddiv
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
@@ -2384,8 +2384,8 @@ Global Symbols
 <LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_pow
 <LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_atan2
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_asin
-<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RollChannel_Output
-<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PitchChannel_Output
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RollChannel_Output
+<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PitchChannel_Output
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AttitudeSolution
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AttitudeAngle_Init
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AngularVelocity_Get

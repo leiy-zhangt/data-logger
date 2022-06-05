@@ -1,7 +1,7 @@
 #include "control.h"
 
-PID_Coefficient PITCH_Coefficient = {1,0,0,0,0,0,0};
-PID_Coefficient ROLL_Coefficient = {1,0,0,0,0,0,0};
+PID_Coefficient PITCH_Coefficient = {PITCH_P,PITCH_I,PITCH_D,0,0,0,0};
+PID_Coefficient ROLL_Coefficient = {ROLL_P,ROLL_I,ROLL_D,0,0,0,0};
 
 u8 Control_Flag = 0;
 
