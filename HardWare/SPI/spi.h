@@ -23,9 +23,9 @@
 #define SPI2_Pinsourse_MISO GPIO_PinSource14
 #define SPI2_Pinsourse_MOSI GPIO_PinSource15
 
-void SPI1_Configuration(void);			//³õÊ¼»¯SPI1¿Ú 
-void SPI2_Configuration(void);          //³õÊ¼»¯SPI2¿Ú 
-u8 SPI_ReadWriteByte(SPI_TypeDef* SPI, u8 Data);//SPI1×ÜÏß¶ÁĞ´Ò»¸ö×Ö½Ú
+void SPI1_Configuration(void);			//åˆå§‹åŒ–SPI1å£ 
+void SPI2_Configuration(void);          //åˆå§‹åŒ–SPI2å£ 
+u16 SPI_ReadWriteByte(SPI_TypeDef* SPI, u16 Data);//SPI1æ€»çº¿è¯»å†™ä¸€ä¸ªå­—èŠ‚
 		 
 #endif
 
