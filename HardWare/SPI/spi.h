@@ -3,7 +3,7 @@
 #include "sys.h"
 
 #define EN_SPI1 1
-#define EN_SPI2 0
+#define EN_SPI2 1
 
 #define SPI1_Port GPIOA
 #define SPI1_GPIO_CLK RCC_AHB1Periph_GPIOA 
@@ -25,7 +25,7 @@
 
 void SPI1_Configuration(void);			//初始化SPI1口 
 void SPI2_Configuration(void);          //初始化SPI2口 
-u8 SPI_ReadWriteByte(SPI_TypeDef* SPI, u8 Data);//SPI1总线读写一个字节
+u16 SPI_ReadWriteByte(SPI_TypeDef* SPI, u16 Data);//SPI1总线读写一个字节
 		 
 #endif
 

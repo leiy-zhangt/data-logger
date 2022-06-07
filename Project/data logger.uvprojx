@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Basic\inc;..\HardWare\IIC;..\HardWare\SPI;..\HardWare\USART;..\HardWare\W25N;..\System\delay;..\System\sys;..\User;..\CMSIS;..\HardWare\BMI055;..\HardWare\LED;..\HardWare\SERVE;..\HardWare\BUZZER;..\HardWare\BMP388;..\HardWare\QMC5883L;..\HardWare\ATGM336H</IncludePath>
+              <IncludePath>..\Basic\inc;..\HardWare\IIC;..\HardWare\SPI;..\HardWare\USART;..\HardWare\W25N;..\System\delay;..\System\sys;..\User;..\CMSIS;..\HardWare\BMI055;..\HardWare\LED;..\HardWare\SERVE;..\HardWare\BUZZER;..\HardWare\BMP388;..\HardWare\QMC5883L;..\HardWare\ATGM336H;..\HardWare\ADI16448</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -681,6 +681,11 @@
               <FileName>atgm336h.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HardWare\ATGM336H\atgm336h.c</FilePath>
+            </File>
+            <File>
+              <FileName>adi16448.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HardWare\ADI16448\adi16448.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -26,12 +26,14 @@ PD:惯性空间位置显示
 #include "buzzer.h"
 #include "atgm336h.h"
 #include "computation.h"
+#include "adi16448.h"
 
 int main(void)
 { 
     RCC_Configuration();
     NVIC_Configuration();
 	SPI1_Configuration();
+    SPI2_Configuration();
     I2C1_Configuration();
     I2C2_Configuration();
     USART1_Configuration(115200,ENABLE);
@@ -43,13 +45,20 @@ int main(void)
     SERVE_Configution(DISABLE);
     BUZZER_Configuration();
     BMP388_Configuration();
+    ADI16448_Configuration();
 //    QMC5883L_Configuration();
     ATGM336H_Configuration(); 
     printf("DATA LOGGER has read\r\n");
     LED = 1;
     while(1)
     {
-        
+        volatile u16 ID=0;
+        ADI16448_CS = 0;
+        ID = SPI_ReadWriteByte(SPI2,0X5600);
+        ID = SPI_ReadWriteByte(SPI2,0X5600);
+        ID = SPI_ReadWriteByte(SPI2,0X5600);
+        ADI16448_CS = 1;
+        delay_ms(1000);
     }
 }
 

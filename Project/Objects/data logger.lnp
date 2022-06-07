@@ -46,6 +46,7 @@
 ".\objects\bmp388.o"
 ".\objects\qmc5883l.o"
 ".\objects\atgm336h.o"
+".\objects\adi16448.o"
 ".\objects\delay.o"
 ".\objects\sys.o"
 ".\objects\main.o"

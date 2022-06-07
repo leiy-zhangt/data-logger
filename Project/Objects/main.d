@@ -57,3 +57,4 @@
 .\objects\main.o: ..\HardWare\SERVE\serve.h
 .\objects\main.o: ..\HardWare\BUZZER\buzzer.h
 .\objects\main.o: ..\HardWare\ATGM336H\atgm336h.h
+.\objects\main.o: ..\HardWare\ADI16448\adi16448.h
