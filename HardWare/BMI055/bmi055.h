@@ -8,6 +8,7 @@
 #include "led.h"
 #include "computation.h"
 #include "command.h"
+#include "control.h"
 
 #define ACC_CS PCout(0)
 #define GYR_CS PCout(2) 
@@ -19,17 +20,6 @@
 #define GYR_Port GPIOC
 #define GYR_CS_Pin GPIO_Pin_2
 #define GYR_INT_Pin GPIO_Pin_3
-
-//#define ACC_Range_2g 0X03
-//#define ACC_Range_4g 0X05
-//#define ACC_Range_8g 0X08
-//#define ACC_Range_16g 0X0C
-
-//#define GYR_Range_125 0X04
-//#define GYR_Range_250 0X03
-//#define GYR_Range_500 0X02
-//#define GYR_Range_1000 0X01
-//#define GYR_Range_2000 0X00
 
 #define ODR_100Hz_32BD 0X07
 #define ODR_200Hz_65BD 0X06
@@ -43,13 +33,12 @@
 #define BMI_ReadCmd(status) TIM_Cmd(TIM4,status) 
 
 typedef enum {ACC_Choose=0,GYR_Choose=1}IMU_Choose;
-typedef enum {BMI_Frequence_10Hz = 4999,BMI_Frequence_20Hz = 2499,BMI_Frequence_50Hz = 999}BMI_Frequence;
+typedef enum {BMI_Frequence_10Hz = 4999,BMI_Frequence_20Hz = 2499,BMI_Frequence_50Hz = 999,BMI_Frequence_100Hz = 499}BMI_Frequence;
 typedef enum {ACC_Range_2g = 0X03,ACC_Range_4g = 0X05,ACC_Range_8g = 0X08,ACC_Range_16g = 0X0C}ACC_Range_Choose;
 typedef enum {GYR_Range_125 = 0X04,GYR_Range_250 = 0X03,GYR_Range_500 = 0X02,GYR_Range_1000 = 0X01,GYR_Range_2000 = 0X00}GYR_Range_Choose;
 
 extern u8 location,bmi_buffer[2048],n;
 extern int16_t acc_16,gyr_16;
-extern double acc,gyr;
 extern uint32_t data_number,final_number; //数据的数量 
 extern double dt;//积分时间步长
 extern int ACC_Range,GYR_Range;  //IMU量程选择

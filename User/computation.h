@@ -7,7 +7,7 @@
 
 #define PI 3.1415926
 
-extern double dq[4],w[3],q[4],pitch,yaw,roll;
+extern double dq[4],w[3],q[4],pitch,yaw,roll,gyr[3],acc[3];
 extern double T_11,T_12,T_13,T_21,T_22,T_23,T_31,T_32,T_33;////b->n姿态转换矩阵
 extern double acceleration_n[3],velocity_n[3],position_n[3];//惯性坐标系下的速度
 

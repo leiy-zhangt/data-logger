@@ -11,6 +11,8 @@ QI：四元数初始化
 AD:惯性空间加速度显示
 VD:惯性空间速度显示
 PD:惯性空间位置显示
+EC:使能控制功能
+DE:失能控制功能
 */
 #include "sys.h"
 #include "delay.h"
@@ -26,30 +28,35 @@ PD:惯性空间位置显示
 #include "buzzer.h"
 #include "atgm336h.h"
 #include "computation.h"
+#include "adi16448.h"
+#include "fuse.h"
 
 int main(void)
 { 
     RCC_Configuration();
     NVIC_Configuration();
 	SPI1_Configuration();
+//	SPI2_Configuration();
     I2C1_Configuration();
-    I2C2_Configuration();
+//    I2C2_Configuration();
     USART1_Configuration(115200,ENABLE);
     USART2_Configuration(9600,DISABLE);
     delay_ms(1000);
     W25N_Configuration();
-    BMI055_Configuration(ACC_Range_2g,GYR_Range_125,BMI_Frequence_50Hz);
+    BMI055_Configuration(ACC_Range_16g,GYR_Range_1000,BMI_Frequence_100Hz);
     LED_Init();
-    SERVE_Configution(DISABLE);
+	ADI16448_Configuration();
+    SERVE_Configution(ENABLE);
     BUZZER_Configuration();
     BMP388_Configuration();
+	FUSE_Configuration();
 //    QMC5883L_Configuration();
     ATGM336H_Configuration(); 
     printf("DATA LOGGER has read\r\n");
-    LED = 1;
+    LED = 0;
     while(1)
     {
-        
+       
     }
 }
 

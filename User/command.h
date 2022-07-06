@@ -6,6 +6,8 @@
 #include "usart.h"
 #include "bmi055.h"
 #include "computation.h"
+#include "serve.h"
+#include "fuse.h"
 
 #define acc_g 9.8
 

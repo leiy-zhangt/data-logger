@@ -1,6 +1,6 @@
 #include "computation.h"
 
-double dq[4],w[3],q[4],pitch,yaw,roll;
+double dq[4],w[3],q[4],pitch,yaw,roll,gyr[3],acc[3];
 double T_11,T_12,T_13,T_21,T_22,T_23,T_31,T_32,T_33;//b->n×ª»»¾ØÕó
 double acceleration_n[3],velocity_n[3],position_n[3];
 
@@ -75,7 +75,7 @@ void AngularVelocity_Get(u8 *buffer,double *gyr)
 
 void AttitudeAngle_Init(double *Euler)
 {
-    double acc[3],sum[3] = {0,0,0};
+    double acc[3],sum[3] = {0,0,0},acc_norm;
     u8 n,buffer[6];
     for(n = 0;n<5;n++)
     {
@@ -88,8 +88,9 @@ void AttitudeAngle_Init(double *Euler)
     acc[0] = sum[0]/5.0;
     acc[1] = sum[1]/5.0;
     acc[2] = sum[2]/5.0;
+	acc_norm = sqrt(acc[0]*acc[0] + acc[1]*acc[1] + acc[2]*acc[2]);
     Euler[0] = 0;
-    Euler[1] = asin(acc[0]/acc_g);
+    Euler[1] = asin(acc[0]/acc_norm);
     Euler[2] = atan2(acc[1],acc[2]);
 }
 

@@ -54,8 +54,8 @@ void SERVE_Configution(FunctionalState SERVE_State)
     TIM_OC4PreloadConfig(TIM3, TIM_OCPreload_Enable);  //使能TIM3在CCR4上的预装载寄存器 
     TIM_ARRPreloadConfig(TIM3,ENABLE);//ARPE使能 	
 	TIM_Cmd(TIM3, ENABLE);  //使能TIM3
-    TIM_SetCompare1(TIM3,1500);
-    TIM_SetCompare2(TIM3,1500);
-    TIM_SetCompare3(TIM3,1500);
-    TIM_SetCompare4(TIM3,1500);
+    CH1_Angle_Set(90);
+	CH2_Angle_Set(90);
+	CH3_Angle_Set(90);
+	CH4_Angle_Set(90);
 }

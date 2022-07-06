@@ -7,7 +7,6 @@
 
 u8 location=0,bmi_buffer[2048],n;
 int16_t acc_16,gyr_16;
-double acc,gyr;
 uint32_t data_number=0,final_number; //数据的数量 
 double dt; //积分时间步长 
 int ACC_Range,GYR_Range;  //IMU量程选择
@@ -86,9 +85,10 @@ void BMI055_Configuration(ACC_Range_Choose acc_range,GYR_Range_Choose gyr_range,
     NVIC_Init(&NVIC_InitStructure);//配置
     //变量初始化
     //初始化积分步长
-    if(frequence == BMI_Frequence_50Hz) dt = 0.02;
+    if(frequence == BMI_Frequence_10Hz) dt = 0.1;
     else if(frequence == BMI_Frequence_20Hz) dt = 0.05;
-    else if(frequence == BMI_Frequence_10Hz) dt = 0.1;
+    else if(frequence == BMI_Frequence_50Hz) dt = 0.02;
+	else if(frequence == BMI_Frequence_100Hz) dt = 0.01;
     //加速度计量程选择
     if(acc_range == ACC_Range_2g) ACC_Range = 4;
     else if(acc_range == ACC_Range_4g) ACC_Range = 8;

@@ -20,6 +20,8 @@ void Command_Execute(USART_TypeDef* USARTx)
     else if(command[0]=='A'&&command[1]=='D') {Command_Flag = 3; Command_Bmi055StartWork();}
     else if(command[0]=='V'&&command[1]=='D') {Command_Flag = 4; Command_Bmi055StartWork();}
     else if(command[0]=='P'&&command[1]=='D') {Command_Flag = 5; Command_Bmi055StartWork();}
+    else if(command[0]=='E'&&command[1]=='C') {Control_Flag = 1;printf("Control ENABLE!\r\n");}
+    else if(command[0]=='D'&&command[1]=='C') {Control_Flag = 0;printf("Control DISABLE!\r\n");}
     else printf("Command is error!\r\n");  
 }
 
@@ -41,17 +43,39 @@ void Command_Bmi055StartWork(void)
     position_n[0] = 0;
     position_n[1] = 0;
     position_n[2] = 0;
+    PITCH_Coefficient.P = PITCH_P;
+    PITCH_Coefficient.I = PITCH_I;
+    PITCH_Coefficient.D = PITCH_D;
+    PITCH_Coefficient.bias = 0;
+    PITCH_Coefficient.bias_d = 0;
+    PITCH_Coefficient.bias_i = 0;
+    PITCH_Coefficient.bias_pre = 0;
+    ROLL_Coefficient.P = ROLL_P;
+    ROLL_Coefficient.I = ROLL_I;
+    ROLL_Coefficient.D = ROLL_D;
+    ROLL_Coefficient.bias = 0;
+    ROLL_Coefficient.bias_d = 0;
+    ROLL_Coefficient.bias_i = 0;
+    ROLL_Coefficient.bias_pre = 0;
     printf("BMI055 is working!\r\n");
     location = 0;
     data_number = 0;
+	fuse_counter = 0;
     page = Start_Page;
+	EN_SERVE = 1;
     BMI_ReadCmd(ENABLE);
 }
 
 void Command_Bmi055StopWork(void)
 {
     BMI_ReadCmd(DISABLE);
+    Control_Flag = 0;
+	LED = 1;
     TIM_SetCounter(TIM4,0X00);
+	CH1_Angle_Set(90);
+	CH2_Angle_Set(90);
+	CH3_Angle_Set(90);
+	CH4_Angle_Set(90);
     delay_us(5);
     printf("BMI055 stops working!\r\n");
     if(Command_Flag == 0)
@@ -74,10 +98,10 @@ void Command_StatusCheck(void)
 
 void Command_DataOutput(void)
 {
+	double gyr,acc;
     data_number = 0;
     page = Start_Page;
     final_number = 0;
-    printf("q init: %0.6f %0.6f %0.6f %0.6f\r\n",q[0],q[1],q[2],q[3]);
     W25N_DataReceive(bmi_buffer,64);
     final_number|=(bmi_buffer[0]<<24);
     final_number|=(bmi_buffer[1]<<16);
@@ -119,14 +143,17 @@ void Command_DataOutput(void)
 
 void Command_BMI055_DataStorage(void)
 {
+    double serve[4];
+	uint8_t n;
     bmi_buffer[16*location]=data_number>>24;
     bmi_buffer[16*location+1]=data_number>>16;
     bmi_buffer[16*location+2]=data_number>>8;
     bmi_buffer[16*location+3]=data_number;
     data_number++;
-    BMI055_ReadBuffer(ACC_Choose,0X02,bmi_buffer+4+16*location,6);
-    delay_us(3);
-    BMI055_ReadBuffer(GYR_Choose,0X02,bmi_buffer+10+16*location,6);
+    Acceleration_Get(bmi_buffer+4+16*location,acc);
+//    BMI055_ReadBuffer(ACC_Choose,0X02,bmi_buffer+4+16*location,6);
+    AngularVelocity_Get(bmi_buffer+10+16*location,gyr);
+//    BMI055_ReadBuffer(GYR_Choose,0X02,bmi_buffer+10+16*location,6);
     location++;
     if(location==128)
     {
@@ -138,6 +165,45 @@ void Command_BMI055_DataStorage(void)
             Command_Bmi055StopWork();
             printf("FLASH is full!\r\n");
         }
+    }
+	AttitudeSolution(q,gyr);
+    roll = Roll_Get(q);
+    if(Control_Flag == 1) if(acc[0]>20) Control_Flag = 2;
+//	if(Control_Flag == 1) Control_Flag = 2;
+    if(Control_Flag == 2)
+    {
+		LED = 1;
+		if(fuse_counter == 100) roll_init = roll;
+		ROLL_Coefficient.D = ROLL_D + (double)fuse_counter/100.0*0.06931;
+        RollChannel_Output(PID_Output(&ROLL_Coefficient,roll*180.0/PI,roll_init*180.0/PI),serve);
+		for(n=0;n<4;n++)
+		{
+//			serve[n] = serve[n]*180.0/PI + 90;
+			serve[n] = serve[n] + 90;
+		}
+		for(n=0;n<4;n++)
+		{
+			if(serve[n]>90 + 15) serve[n] = 90 + 15;
+			if(serve[n]<90 - 15) serve[n] = 90 - 15;
+		}
+		if(fuse_counter>=100 && fuse_counter<750)
+		{
+			CH1_Angle_Set(serve[0]);
+			CH2_Angle_Set(serve[1]);
+			CH3_Angle_Set(serve[2]);
+			CH4_Angle_Set(serve[3]);
+		}
+		if(fuse_counter >= 750) 
+		{
+			FUSE = 0;
+			CH1_Angle_Set(90);
+			CH2_Angle_Set(90);
+			CH3_Angle_Set(90);
+			CH4_Angle_Set(90);
+		}
+		if(fuse_counter >= 850) EN_SERVE = 0;
+		if(fuse_counter == 100*60*5) Command_Bmi055StopWork();
+		fuse_counter++;
     }
 }
 
@@ -217,6 +283,7 @@ void Command_Q_Init(double *q)
     yaw = Euler[0];
     pitch = Euler[1];
     roll = Euler[2];
+	roll_init = roll;
     T_11 = cos(roll)*cos(yaw)-sin(roll)*sin(pitch)*sin(yaw);
     T_21 = cos(roll)*sin(yaw)+sin(roll)*sin(pitch)*cos(yaw);
     T_31 = -sin(roll)*cos(pitch);
@@ -233,6 +300,7 @@ void Command_Q_Init(double *q)
     if((T_32 - T_23)<0) q[1] = -q[1];
     if((T_13 - T_31)<0) q[2] = -q[2];
     if((T_21 - T_12)<0) q[3] = -q[3];
+	printf("q init: %0.6f %0.6f %0.6f %0.6f\r\n",q[0],q[1],q[2],q[3]);
     printf("Q initialization has finished!\r\n");
 }
 
